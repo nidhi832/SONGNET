@@ -159,20 +159,4 @@ Summary table from `results/comparison.md`:
 
 ---
 
-## 👥 6. Team Member Split
 
-| Task Area | Member A – Data & Baselines | Member B – Model & Demo |
-| :--- | :--- | :--- |
-| **Code Implementation** | `src/preprocess.py`, `src/baselines.py`, `src/evaluate.py` | `src/model.py`, `src/train.py`, `app.py` |
-| **Experiments & Tuning** | Feature extraction, classical ML tuning, baseline evaluation. | Model architecture, GRU vs Conv head, ablation experiments. |
-| **Write-Up Contribution**| Dataset properties, preprocessing, baselines section, evaluation. | Deep learning methodology, training setup, conclusions & demo. |
-| **Joint Tasks** | README, slides deck, live demonstration practice, code reviews. | README, slides deck, live demonstration practice, code reviews. |
-
----
-
-## 💡 Notes on Design Choices (Q&A Preparation)
-
-1. **1D Convolutions Along Time Only**: Frequency in music is not translation-invariant (shifting frequencies changes pitch and scale), whereas time is translation-invariant. Therefore, 1D convolution acts along the time dimension across all 128 Mel channels.
-2. **Mean Pooling of Per-Timestep Probabilities**: Softmax probabilities are calculated at each frame timestep. Taking the temporal mean produces song-level predictions while maintaining frame-level outputs needed for real-time streaming.
-3. **Strict Normalization Protocol**: Mean and standard deviation are calculated strictly on the training set split (`data/processed/norm.npz`) to eliminate test set leakage.
-4. **Causal GRU Option**: The optional GRU head is unidirectional so that predictions at frame $t$ rely only on historical time frames $0 \dots t$, ensuring causality for streaming audio.
