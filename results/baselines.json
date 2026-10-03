@@ -1,0 +1,70 @@
+{
+  "kNN (k=5)": {
+    "train_accuracy": 1.0,
+    "test_accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "per_class_f1": {
+      "Electronic": 1.0,
+      "Experimental": 1.0,
+      "Folk": 1.0,
+      "Hip-Hop": 1.0,
+      "Instrumental": 1.0,
+      "International": 1.0,
+      "Pop": 1.0,
+      "Rock": 1.0
+    }
+  },
+  "Logistic Regression": {
+    "train_accuracy": 1.0,
+    "test_accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "per_class_f1": {
+      "Electronic": 1.0,
+      "Experimental": 1.0,
+      "Folk": 1.0,
+      "Hip-Hop": 1.0,
+      "Instrumental": 1.0,
+      "International": 1.0,
+      "Pop": 1.0,
+      "Rock": 1.0
+    }
+  },
+  "MLP Classifier": {
+    "train_accuracy": 1.0,
+    "test_accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "per_class_f1": {
+      "Electronic": 1.0,
+      "Experimental": 1.0,
+      "Folk": 1.0,
+      "Hip-Hop": 1.0,
+      "Instrumental": 1.0,
+      "International": 1.0,
+      "Pop": 1.0,
+      "Rock": 1.0
+    }
+  },
+  "Linear SVM": {
+    "train_accuracy": 1.0,
+    "test_accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "per_class_f1": {
+      "Electronic": 1.0,
+      "Experimental": 1.0,
+      "Folk": 1.0,
+      "Hip-Hop": 1.0,
+      "Instrumental": 1.0,
+      "International": 1.0,
+      "Pop": 1.0,
+      "Rock": 1.0
+    }
+  }
+}

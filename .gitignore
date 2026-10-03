@@ -1,0 +1,22 @@
+# Large binary dataset files (> 100MB)
+*.npy
+*.npz
+data/processed/
+data/processed_small/
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Node dependencies & build artifacts
+music-app/node_modules/
+music-app/dist/
+
+# Logs & temporary scratch directories
+*.log
+scratch/
+.DS_Store
