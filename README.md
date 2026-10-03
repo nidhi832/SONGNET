@@ -1,7 +1,5 @@
 # SongNet: Real-Time Music Genre Classification
 
-**UE24CS352A Machine Learning Mini-Project**  
-*Re-implementation of SongNet (Zhang, Zhang, Chen – Stanford CS229, 2018) on the FMA-small dataset.*
 
 ---
 
