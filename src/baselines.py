@@ -1,6 +1,6 @@
 """
 Classical ML Baselines for Music Genre Classification.
-Evaluates kNN, Logistic Regression, MLP, and Linear SVM on hand-crafted features.
+Evaluates kNN, Logistic Regression, MLP, Linear SVM, and Random Forest on hand-crafted features.
 """
 
 import os
@@ -12,6 +12,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import LinearSVC, SVC
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
 
@@ -119,7 +120,8 @@ def main():
         "kNN (k=5)": KNeighborsClassifier(n_neighbors=5),
         "Logistic Regression": LogisticRegression(max_iter=1000, random_state=args.seed, C=1.0),
         "MLP Classifier": MLPClassifier(hidden_layer_sizes=(100, 50), max_iter=500, random_state=args.seed),
-        "Linear SVM": SVC(kernel='linear', C=1.0, random_state=args.seed)
+        "Linear SVM": SVC(kernel='linear', C=1.0, random_state=args.seed),
+        "Random Forest": RandomForestClassifier(n_estimators=200, max_depth=None, random_state=args.seed, n_jobs=-1),
     }
 
     results = {}
