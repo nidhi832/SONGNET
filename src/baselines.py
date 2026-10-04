@@ -15,6 +15,7 @@ from sklearn.svm import LinearSVC, SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
+from scipy.stats import skew
 
 from src.common import GENRES, GENRE_TO_IDX, IDX_TO_GENRE
 
@@ -50,8 +51,8 @@ def load_fma_features(fma_dir, df_meta):
 
 def extract_features_from_mels(mels):
     """
-    Extract baseline summary features (mean, std, min, max, skew) from log-Mel spectrograms.
-    Shape input: (N, 128, T) -> Output: (N, 128 * 4 + extra)
+    Extract baseline summary features (mean, std, skew, max, min) from log-Mel spectrograms.
+    Shape input: (N, 128, T) -> Output: (N, 128 * 5 = 640)
     """
     N, n_mels, T = mels.shape
     features = []
@@ -60,11 +61,13 @@ def extract_features_from_mels(mels):
         mel = mels[i]  # Shape: (128, T)
         mean_feat = np.mean(mel, axis=1)
         std_feat = np.std(mel, axis=1)
+        skew_feat = skew(mel, axis=1)
         max_feat = np.max(mel, axis=1)
         min_feat = np.min(mel, axis=1)
         
-        # Spectral summary features
-        feat_vector = np.concatenate([mean_feat, std_feat, max_feat, min_feat])
+        # 640 spectral summary features matching trained Kaggle FMA scaler
+        feat_vector = np.hstack([mean_feat, std_feat, skew_feat, max_feat, min_feat])
+        feat_vector = np.nan_to_num(feat_vector, nan=0.0, posinf=0.0, neginf=0.0)
         features.append(feat_vector)
         
     return np.array(features, dtype=np.float32)

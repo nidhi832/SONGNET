@@ -666,7 +666,7 @@ class SongNetPredictor:
         # 1. Load Time-Distributed Model
         # Priority: models/ (new trained weights) -> runs/songnet/ -> runs/songnet_small/
         self.songnet_td = None
-        models_dir = os.path.join(base_dir, "models")
+        models_dir = "models"
         td_ckpt = ckpt_path if (ckpt_path and os.path.exists(ckpt_path)) else None
         if not td_ckpt:
             for candidate in [
@@ -691,7 +691,7 @@ class SongNetPredictor:
                     self.songnet_td = get_model(head="time_distributed", dropout=0.3).to(self.device)
                     self.songnet_td.load_state_dict(checkpoint)
                 self.songnet_td.eval()
-                print(f"✓ Loaded SongNet TD model from: {td_ckpt}")
+                print(f"[LOADED] SongNet TD model from: {td_ckpt}")
             except Exception as e:
                 print(f"Error loading Time-Distributed model: {e}")
 
@@ -713,7 +713,7 @@ class SongNetPredictor:
                         self.songnet_gru = get_model(head="gru", dropout=0.3).to(self.device)
                         self.songnet_gru.load_state_dict(checkpoint)
                     self.songnet_gru.eval()
-                    print(f"✓ Loaded SongNet GRU model from: {gru_candidate}")
+                    print(f"[LOADED] SongNet GRU model from: {gru_candidate}")
                 except Exception as e:
                     print(f"Error loading GRU model: {e}")
                 break
@@ -741,7 +741,7 @@ class SongNetPredictor:
                     else:
                         # Plain dict of model_name -> fitted_model
                         self.baseline_models = data
-                    print(f"✓ Loaded baselines from: {bl_candidate}")
+                    print(f"[LOADED] baselines from: {bl_candidate}")
                 except Exception as e:
                     print(f"Error loading baselines: {e}")
                 break
@@ -826,7 +826,9 @@ class SongNetPredictor:
                 "Classical kNN (k=5)": "kNN (k=5)",
                 "Classical Logistic Regression": "Logistic Regression",
                 "Classical MLP Classifier": "MLP Classifier",
-                "Classical Linear SVM": "Linear SVM"
+                "Classical Linear SVM": "Linear SVM",
+                "Classical Random Forest": "Random Forest",
+                "Random Forest": "Random Forest"
             }
             clf_key = clf_name_map.get(model_name, model_name)
             
@@ -1131,7 +1133,8 @@ def build_app(predictor):
         "Classical kNN (k=5)",
         "Classical Logistic Regression",
         "Classical MLP Classifier",
-        "Classical Linear SVM"
+        "Classical Linear SVM",
+        "Classical Random Forest"
     ]
 
     def generate_track_audio(genre_name):
