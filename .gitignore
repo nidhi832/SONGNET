@@ -16,6 +16,12 @@ env/
 music-app/node_modules/
 music-app/dist/
 
+# Old sample-trained model weights (replaced by models/ folder)
+runs/songnet/best.pt
+runs/songnet_gru/best.pt
+runs/songnet_small/best.pt
+results/baselines.joblib
+
 # Logs & temporary scratch directories
 *.log
 scratch/
