@@ -139,21 +139,21 @@ python -m src.evaluate --data_dir data/processed --run_dir runs/songnet_nocrop -
 
 ## 📊 5. Results & Benchmark Comparison
 
-Summary table from `results/comparison.md`:
+Summary table from `results/comparison.md` (Evaluated on 800 test tracks across 8 balanced genres):
 
 | Model / Baseline | Input Representation | Test Accuracy | Macro F1 Score |
 | :--- | :--- | :---: | :---: |
-| **Random Guessing** | Uniform | 12.50% | 0.1250 |
-| **kNN (k=5)** | Hand-crafted Features | ~38.40% | ~0.3720 |
-| **Logistic Regression** | Hand-crafted Features | ~41.20% | ~0.4050 |
-| **Linear SVM** | Hand-crafted Features | ~43.50% | ~0.4280 |
-| **MLP Classifier** | Hand-crafted Features | ~46.10% | ~0.4550 |
-| **SongNet (Stanford CS229 Paper)** | Log-Mel Spectrogram | **~65.00%** | **~0.6410** |
-| **SongNet (Our PyTorch Re-impl)** | Log-Mel Spectrogram | **~66.20%** | **~0.6580** |
+| **SongNet (Our PyTorch Re-impl)** | Log-Mel Spectrogram (Raw Audio) | **57.17%** | **0.5782** |
+| **MLP Classifier** | 640 Statistical Mel Features | **53.50%** | **0.5384** |
+| **Random Forest (200 trees)** | 640 Statistical Mel Features | **48.75%** | **0.4755** |
+| **Logistic Regression** | 640 Statistical Mel Features | **43.00%** | **0.4268** |
+| **Linear SVM** | 640 Statistical Mel Features | **40.38%** | **0.4017** |
+| **kNN (k=5)** | 640 Statistical Mel Features | **37.75%** | **0.3675** |
+| **Random Guessing** | Uniform Random Choice (1 / 8) | **12.50%** | **0.1250** |
 
 ### Confusion Matrix & Genre Analysis
-- **Easiest Genres**: *Hip-Hop* and *Instrumental* yield the highest per-class F1 scores due to prominent drum patterns and acoustic features.
-- **Hardest Genres**: Consistent with the Stanford CS229 paper, **Experimental** and **Pop** genres present the highest confusion. Pop shares timbral characteristics with Rock and International, while Experimental spans varied non-standard distributions.
+- **Easiest Genres**: *Hip-Hop* (83% recall, 0.65 F1) and *Folk* (78% recall, 0.64 F1) yield the highest per-class scores due to prominent drum patterns, steady rhythmic transients, and distinct acoustic harmonic features.
+- **Hardest Genres**: Consistent with the Stanford CS229 paper, **Experimental** (29% recall, 0.36 F1) and **Pop** (1% recall, 0.02 F1) present the highest confusion. Pop shares timbral characteristics with Rock, Electronic, and International, while Experimental spans varied non-standard avant-garde distributions.
 
 ---
 
