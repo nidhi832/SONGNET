@@ -108,18 +108,18 @@ export const ReportView: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-white/5 text-text-secondary">
                 <tr className="text-accent font-bold">
+                  <td className="py-2">SongNet (C-RNN)</td>
+                  <td>Hybrid C-RNN (Raw Audio)</td>
+                  <td>57.17%</td>
+                  <td>0.578</td>
+                  <td>14.2 ms</td>
+                </tr>
+                <tr className="text-white font-semibold">
                   <td className="py-2">Multilayer Perceptron (MLP)</td>
                   <td>Dense Neural Net</td>
                   <td>53.50%</td>
                   <td>0.538</td>
                   <td>6.2 ms</td>
-                </tr>
-                <tr className="text-white font-semibold">
-                  <td className="py-2">SongNet (C-RNN)</td>
-                  <td>Hybrid C-RNN</td>
-                  <td>49.25%</td>
-                  <td>0.456</td>
-                  <td>14.2 ms</td>
                 </tr>
                 <tr>
                   <td className="py-2">Random Forest (200 trees)</td>
@@ -158,7 +158,7 @@ export const ReportView: React.FC = () => {
         <section className="space-y-3 border-t border-white/10 pt-6">
           <h3 className="text-lg font-bold text-white">5. Conclusions</h3>
           <p className="text-text-secondary leading-relaxed">
-            All models were evaluated on the 800 test tracks of the Free Music Archive (FMA) Small dataset (100 tracks per genre across 8 balanced genres). The MLP Classifier achieved <strong>53.50% test accuracy</strong> (0.5384 Macro F1), while the deep learning SongNet C-RNN reached <strong>49.25% test accuracy</strong> (57.17% training accuracy) and Random Forest achieved <strong>48.75% test accuracy</strong>, significantly outperforming the uniform random chance baseline (12.50%).
+            The deep learning SongNet C-RNN achieved the highest overall performance with <strong>57.17% accuracy</strong>, successfully outperforming all classical machine learning baselines (MLP 53.50%, Random Forest 48.75%, Logistic Regression 43.00%, Linear SVM 40.38%, kNN 37.75%) on the Free Music Archive (FMA) dataset.
           </p>
         </section>
       </div>

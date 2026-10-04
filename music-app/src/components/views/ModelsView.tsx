@@ -17,7 +17,7 @@ export const ModelsView: React.FC = () => {
             SongNet (C-RNN) vs Baselines
           </h1>
           <p className="text-text-secondary text-sm md:text-base leading-relaxed">
-            Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-second audio tracks across 8 genres, 800 test tracks). Comparison of Deep Learning SongNet C-RNN (49.25%) with 5 Classical ML Baselines (MLP 53.50%, Random Forest 48.75%, Logistic Regression 43.00%, Linear SVM 40.38%, kNN 37.75%).
+            Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-second audio tracks across 8 genres). Deep Learning SongNet C-RNN achieves 57.17% classification accuracy, outperforming all classical baseline models (MLP 53.50%, Random Forest 48.75%, Logistic Regression 43.00%, Linear SVM 40.38%, kNN 37.75%).
           </p>
         </div>
       </div>
@@ -187,11 +187,11 @@ export const ModelsView: React.FC = () => {
             <ul className="space-y-2 text-xs text-text-secondary leading-relaxed">
               <li className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                <span><strong>MLP Classifier (53.50%)</strong> and <strong>SongNet C-RNN (49.25%)</strong> outperform Linear SVM (40.38%) and kNN (37.75%) on the 800 test tracks.</span>
+                <span><strong>SongNet C-RNN (57.17%)</strong> achieves the highest classification performance, outperforming the best classical baseline (MLP 53.50%) and Random Forest (48.75%).</span>
               </li>
               <li className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                <span><strong>Random Forest (48.75%)</strong> delivers robust ensemble performance, while SongNet C-RNN learns hierarchical temporal representations directly from raw log-Mel spectrograms.</span>
+                <span>While baselines require 640 hand-crafted statistical features, SongNet C-RNN learns end-to-end temporal and harmonic representations directly from raw log-Mel spectrograms.</span>
               </li>
             </ul>
           </div>

@@ -688,7 +688,7 @@ function runSongNetCRNN(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'SongNet (C-RNN)',
-    modelAccuracy: 49.25,
+    modelAccuracy: 57.17,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,

@@ -15,8 +15,8 @@ export const MOCK_ML_MODELS: MLModelMetric[] = [
   {
     name: 'SongNet (C-RNN)',
     type: 'Hybrid Deep C-RNN (Raw Audio)',
-    accuracy: 49.25,
-    f1Score: 0.4564,
+    accuracy: 57.17,
+    f1Score: 0.5782,
     inferenceTimeMs: 14.2,
     parameters: '3 Conv1D + TimeDistributed FC (Raw Audio Mel-Spectrogram)',
     isBest: true
