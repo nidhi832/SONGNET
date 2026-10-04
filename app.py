@@ -664,33 +664,59 @@ class SongNetPredictor:
                 print(f"Warning: Failed to load norm.npz: {e}")
 
         # 1. Load Time-Distributed Model
+        # Priority: models/ (new trained weights) -> runs/songnet/ -> runs/songnet_small/
         self.songnet_td = None
-        td_ckpt = ckpt_path if (ckpt_path and os.path.exists(ckpt_path)) else os.path.join(runs_dir, "songnet", "best.pt")
-        if not (td_ckpt and os.path.exists(td_ckpt)):
-            td_ckpt = os.path.join(runs_dir, "songnet_small", "best.pt")
-            
+        models_dir = os.path.join(base_dir, "models")
+        td_ckpt = ckpt_path if (ckpt_path and os.path.exists(ckpt_path)) else None
+        if not td_ckpt:
+            for candidate in [
+                os.path.join(models_dir, "best.pt"),
+                os.path.join(models_dir, "best (1).pt"),
+                os.path.join(runs_dir, "songnet", "best.pt"),
+                os.path.join(runs_dir, "songnet_small", "best.pt"),
+            ]:
+                if os.path.exists(candidate):
+                    td_ckpt = candidate
+                    break
+
         if td_ckpt and os.path.exists(td_ckpt):
             try:
                 checkpoint = torch.load(td_ckpt, map_location=self.device)
-                cfg = checkpoint.get("config", {"head": "time_distributed", "dropout": 0.3})
-                self.songnet_td = get_model(head=cfg.get("head", "time_distributed"), dropout=cfg.get("dropout", 0.3)).to(self.device)
-                self.songnet_td.load_state_dict(checkpoint["model_state_dict"])
+                if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
+                    cfg = checkpoint.get("config", {"head": "time_distributed", "dropout": 0.3})
+                    self.songnet_td = get_model(head=cfg.get("head", "time_distributed"), dropout=cfg.get("dropout", 0.3)).to(self.device)
+                    self.songnet_td.load_state_dict(checkpoint["model_state_dict"])
+                else:
+                    # Plain state_dict saved via torch.save(model.state_dict(), ...)
+                    self.songnet_td = get_model(head="time_distributed", dropout=0.3).to(self.device)
+                    self.songnet_td.load_state_dict(checkpoint)
                 self.songnet_td.eval()
+                print(f"✓ Loaded SongNet TD model from: {td_ckpt}")
             except Exception as e:
                 print(f"Error loading Time-Distributed model: {e}")
 
         # 2. Load GRU Head Model
+        # Priority: models/ -> runs/songnet_gru/
         self.songnet_gru = None
-        gru_ckpt = os.path.join(runs_dir, "songnet_gru", "best.pt")
-        if os.path.exists(gru_ckpt):
-            try:
-                checkpoint = torch.load(gru_ckpt, map_location=self.device)
-                cfg = checkpoint.get("config", {"head": "gru", "dropout": 0.3})
-                self.songnet_gru = get_model(head="gru", dropout=cfg.get("dropout", 0.3)).to(self.device)
-                self.songnet_gru.load_state_dict(checkpoint["model_state_dict"])
-                self.songnet_gru.eval()
-            except Exception as e:
-                print(f"Error loading GRU model: {e}")
+        for gru_candidate in [
+            os.path.join(models_dir, "best_gru.pt"),
+            os.path.join(runs_dir, "songnet_gru", "best.pt"),
+        ]:
+            if os.path.exists(gru_candidate):
+                try:
+                    checkpoint = torch.load(gru_candidate, map_location=self.device)
+                    if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
+                        cfg = checkpoint.get("config", {"head": "gru", "dropout": 0.3})
+                        self.songnet_gru = get_model(head="gru", dropout=cfg.get("dropout", 0.3)).to(self.device)
+                        self.songnet_gru.load_state_dict(checkpoint["model_state_dict"])
+                    else:
+                        self.songnet_gru = get_model(head="gru", dropout=0.3).to(self.device)
+                        self.songnet_gru.load_state_dict(checkpoint)
+                    self.songnet_gru.eval()
+                    print(f"✓ Loaded SongNet GRU model from: {gru_candidate}")
+                except Exception as e:
+                    print(f"Error loading GRU model: {e}")
+                break
 
         # Fallback if no deep model checkpoint was loaded
         if self.songnet_td is None:
@@ -698,19 +724,27 @@ class SongNetPredictor:
             self.songnet_td.eval()
 
         # 3. Load Classical Baselines
+        # Priority: models/ -> results/ -> results_small/
         self.baseline_scaler = None
         self.baseline_models = {}
-        baselines_joblib = os.path.join(results_dir, "baselines.joblib")
-        if not os.path.exists(baselines_joblib):
-            baselines_joblib = os.path.join("results_small", "baselines.joblib")
-            
-        if os.path.exists(baselines_joblib):
-            try:
-                data = joblib.load(baselines_joblib)
-                self.baseline_scaler = data.get("scaler")
-                self.baseline_models = data.get("models", {})
-            except Exception as e:
-                print(f"Error loading baselines: {e}")
+        for bl_candidate in [
+            os.path.join(models_dir, "baselines.joblib"),
+            os.path.join(results_dir, "baselines.joblib"),
+            os.path.join("results_small", "baselines.joblib"),
+        ]:
+            if os.path.exists(bl_candidate):
+                try:
+                    data = joblib.load(bl_candidate)
+                    if isinstance(data, dict) and "models" in data:
+                        self.baseline_scaler = data.get("scaler")
+                        self.baseline_models = data.get("models", {})
+                    else:
+                        # Plain dict of model_name -> fitted_model
+                        self.baseline_models = data
+                    print(f"✓ Loaded baselines from: {bl_candidate}")
+                except Exception as e:
+                    print(f"Error loading baselines: {e}")
+                break
 
     def _prepare_audio(self, audio_input):
         if audio_input is None:
