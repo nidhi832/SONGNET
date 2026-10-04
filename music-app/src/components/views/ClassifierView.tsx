@@ -658,7 +658,7 @@ export const ClassifierView: React.FC = () => {
               <div className="flex justify-between">
                 <span>Test Accuracy (FMA):</span>
                 <span className="text-white font-bold">
-                  {mode === 'upload' && displayedModel ? `${displayedModel.modelAccuracy}%` : '65.23%'}
+                  {mode === 'upload' && displayedModel ? `${displayedModel.modelAccuracy}%` : '49.25%'}
                 </span>
               </div>
               <div className="flex justify-between">

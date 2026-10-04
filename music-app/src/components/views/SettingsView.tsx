@@ -369,11 +369,12 @@ export const SettingsView: React.FC = () => {
                       onChange={(e) => setDefaultModel(e.target.value)}
                       className="w-full px-4 py-3 rounded-2xl bg-black/40 border border-white/10 text-white text-xs font-medium focus:outline-none focus:border-accent"
                     >
-                      <option value="c-rnn">SongNet C-RNN (65.23% Test Accuracy - Recommended)</option>
-                      <option value="svm">Support Vector Machine SVM (46.38% Baseline)</option>
-                      <option value="mlp">Multilayer Perceptron MLP (44.88% Baseline)</option>
-                      <option value="lr">Logistic Regression (42.25% Baseline)</option>
-                      <option value="knn">K-Nearest Neighbors KNN (36.38% Baseline)</option>
+                      <option value="c-rnn">SongNet C-RNN (49.25% Deep Learning - Recommended)</option>
+                      <option value="mlp">Multilayer Perceptron MLP (53.50% Baseline)</option>
+                      <option value="rf">Random Forest (48.75% Baseline)</option>
+                      <option value="lr">Logistic Regression (43.00% Baseline)</option>
+                      <option value="svm">Support Vector Machine SVM (40.38% Baseline)</option>
+                      <option value="knn">K-Nearest Neighbors KNN (37.75% Baseline)</option>
                     </select>
                   </div>
 

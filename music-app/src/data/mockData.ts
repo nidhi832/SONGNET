@@ -14,50 +14,58 @@ export const FMA_GENRES = [
 export const MOCK_ML_MODELS: MLModelMetric[] = [
   {
     name: 'SongNet (C-RNN)',
-    type: 'Hybrid Deep C-RNN',
-    accuracy: 65.23,
-    f1Score: 0.648,
+    type: 'Hybrid Deep C-RNN (Raw Audio)',
+    accuracy: 49.25,
+    f1Score: 0.4564,
     inferenceTimeMs: 14.2,
     parameters: '3 Conv1D + TimeDistributed FC (Raw Audio Mel-Spectrogram)',
     isBest: true
   },
   {
-    name: 'Support Vector Machine (SVM)',
-    type: 'Baseline ML (with metadata)',
-    accuracy: 46.38,
-    f1Score: 0.455,
-    inferenceTimeMs: 4.1,
-    parameters: 'RBF / Linear Kernel (140 FMA features + metadata)'
+    name: 'Multilayer Perceptron (MLP)',
+    type: 'Dense Neural Baseline',
+    accuracy: 53.50,
+    f1Score: 0.5384,
+    inferenceTimeMs: 6.2,
+    parameters: 'Dense Neural Net (256, 128) on 640 statistical features'
   },
   {
-    name: 'Multilayer Perceptron (MLP)',
-    type: 'Baseline ML (with metadata)',
-    accuracy: 44.88,
-    f1Score: 0.440,
-    inferenceTimeMs: 6.2,
-    parameters: 'Dense Neural Net (140 FMA features + metadata)'
+    name: 'Random Forest',
+    type: 'Ensemble Baseline',
+    accuracy: 48.75,
+    f1Score: 0.4755,
+    inferenceTimeMs: 11.5,
+    parameters: '200 Decision Trees on 640 statistical features'
   },
   {
     name: 'Logistic Regression',
-    type: 'Baseline ML (with metadata)',
-    accuracy: 42.25,
-    f1Score: 0.415,
+    type: 'Linear Baseline',
+    accuracy: 43.00,
+    f1Score: 0.4268,
     inferenceTimeMs: 2.1,
-    parameters: 'Softmax Classifier (140 FMA features + metadata)'
+    parameters: 'Softmax Classifier on 640 statistical features'
+  },
+  {
+    name: 'Linear SVM',
+    type: 'Kernel Baseline',
+    accuracy: 40.38,
+    f1Score: 0.4017,
+    inferenceTimeMs: 4.1,
+    parameters: 'Linear Kernel on 640 statistical features'
   },
   {
     name: 'K Nearest Neighbors (KNN)',
-    type: 'Baseline ML (with metadata)',
-    accuracy: 36.38,
-    f1Score: 0.352,
+    type: 'Instance Baseline',
+    accuracy: 37.75,
+    f1Score: 0.3675,
     inferenceTimeMs: 8.5,
-    parameters: 'k=5 Neighbors (140 FMA features + metadata)'
+    parameters: 'k=5 Neighbors on 640 statistical features'
   },
   {
     name: 'Random Guessing',
     type: 'Random Baseline',
     accuracy: 12.50,
-    f1Score: 0.125,
+    f1Score: 0.1250,
     inferenceTimeMs: 0.1,
     parameters: 'Uniform Random Choice (1 / 8 genres)'
   }
@@ -66,14 +74,14 @@ export const MOCK_ML_MODELS: MLModelMetric[] = [
 export const MOCK_CONFUSION_MATRIX = {
   labels: ['Electr.', 'Experim.', 'Folk', 'Hip-Hop', 'Instrum.', 'Internat.', 'Pop', 'Rock'],
   matrix: [
-    [72, 5, 2, 8, 3, 2, 4, 4],   // Electronic
-    [8, 58, 7, 4, 11, 3, 2, 7],  // Experimental
-    [2, 6, 74, 1, 6, 4, 3, 4],   // Folk
-    [7, 3, 1, 81, 1, 2, 3, 2],   // Hip-Hop
-    [4, 10, 8, 1, 68, 4, 2, 3],  // Instrumental
-    [3, 4, 6, 4, 5, 66, 7, 5],   // International
-    [6, 2, 4, 5, 2, 5, 64, 12],  // Pop
-    [5, 8, 4, 2, 3, 4, 10, 64]   // Rock
+    [48, 8, 4, 11, 6, 9, 3, 11],   // Electronic (48% recall)
+    [7, 29, 9, 6, 18, 14, 2, 15],  // Experimental (29% recall)
+    [2, 4, 78, 2, 3, 5, 2, 4],     // Folk (78% recall)
+    [5, 2, 1, 83, 1, 4, 1, 3],     // Hip-Hop (83% recall)
+    [6, 12, 8, 4, 32, 21, 2, 15],  // Instrumental (32% recall)
+    [3, 4, 7, 5, 4, 73, 1, 3],     // International (73% recall)
+    [12, 10, 11, 14, 8, 21, 1, 23],// Pop (1% recall)
+    [5, 7, 10, 4, 6, 8, 10, 50]    // Rock (50% recall)
   ]
 };
 

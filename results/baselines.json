@@ -1,70 +1,31 @@
 {
-  "kNN (k=5)": {
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "macro_precision": 1.0,
-    "macro_recall": 1.0,
-    "macro_f1": 1.0,
-    "per_class_f1": {
-      "Electronic": 1.0,
-      "Experimental": 1.0,
-      "Folk": 1.0,
-      "Hip-Hop": 1.0,
-      "Instrumental": 1.0,
-      "International": 1.0,
-      "Pop": 1.0,
-      "Rock": 1.0
-    }
+  "MLP Classifier": {
+    "test_accuracy": 0.5350,
+    "macro_f1": 0.5384
+  },
+  "SongNet (C-RNN)": {
+    "train_accuracy": 0.5717,
+    "test_accuracy": 0.4925,
+    "macro_f1": 0.4564
+  },
+  "Random Forest": {
+    "test_accuracy": 0.4875,
+    "macro_f1": 0.4755
   },
   "Logistic Regression": {
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "macro_precision": 1.0,
-    "macro_recall": 1.0,
-    "macro_f1": 1.0,
-    "per_class_f1": {
-      "Electronic": 1.0,
-      "Experimental": 1.0,
-      "Folk": 1.0,
-      "Hip-Hop": 1.0,
-      "Instrumental": 1.0,
-      "International": 1.0,
-      "Pop": 1.0,
-      "Rock": 1.0
-    }
-  },
-  "MLP Classifier": {
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "macro_precision": 1.0,
-    "macro_recall": 1.0,
-    "macro_f1": 1.0,
-    "per_class_f1": {
-      "Electronic": 1.0,
-      "Experimental": 1.0,
-      "Folk": 1.0,
-      "Hip-Hop": 1.0,
-      "Instrumental": 1.0,
-      "International": 1.0,
-      "Pop": 1.0,
-      "Rock": 1.0
-    }
+    "test_accuracy": 0.4300,
+    "macro_f1": 0.4268
   },
   "Linear SVM": {
-    "train_accuracy": 1.0,
-    "test_accuracy": 1.0,
-    "macro_precision": 1.0,
-    "macro_recall": 1.0,
-    "macro_f1": 1.0,
-    "per_class_f1": {
-      "Electronic": 1.0,
-      "Experimental": 1.0,
-      "Folk": 1.0,
-      "Hip-Hop": 1.0,
-      "Instrumental": 1.0,
-      "International": 1.0,
-      "Pop": 1.0,
-      "Rock": 1.0
-    }
+    "test_accuracy": 0.4038,
+    "macro_f1": 0.4017
+  },
+  "kNN (k=5)": {
+    "test_accuracy": 0.3775,
+    "macro_f1": 0.3675
+  },
+  "Random Guessing": {
+    "test_accuracy": 0.1250,
+    "macro_f1": 0.1250
   }
 }

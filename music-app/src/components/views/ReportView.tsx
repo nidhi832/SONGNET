@@ -108,39 +108,46 @@ export const ReportView: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-white/5 text-text-secondary">
                 <tr className="text-accent font-bold">
+                  <td className="py-2">Multilayer Perceptron (MLP)</td>
+                  <td>Dense Neural Net</td>
+                  <td>53.50%</td>
+                  <td>0.538</td>
+                  <td>6.2 ms</td>
+                </tr>
+                <tr className="text-white font-semibold">
                   <td className="py-2">SongNet (C-RNN)</td>
                   <td>Hybrid C-RNN</td>
-                  <td>65.23%</td>
-                  <td>0.648</td>
+                  <td>49.25%</td>
+                  <td>0.456</td>
                   <td>14.2 ms</td>
                 </tr>
                 <tr>
-                  <td className="py-2">ResNet-18 Audio</td>
-                  <td>Deep Learning</td>
-                  <td>52.40%</td>
-                  <td>0.512</td>
-                  <td>28.5 ms</td>
+                  <td className="py-2">Random Forest (200 trees)</td>
+                  <td>Ensemble Baseline</td>
+                  <td>48.75%</td>
+                  <td>0.475</td>
+                  <td>11.5 ms</td>
                 </tr>
                 <tr>
-                  <td className="py-2">2D CNN Spectrogram</td>
-                  <td>Deep Learning</td>
-                  <td>45.80%</td>
-                  <td>0.449</td>
-                  <td>18.0 ms</td>
+                  <td className="py-2">Logistic Regression</td>
+                  <td>Linear Baseline</td>
+                  <td>43.00%</td>
+                  <td>0.427</td>
+                  <td>2.1 ms</td>
                 </tr>
                 <tr>
-                  <td className="py-2">SVM (RBF Kernel)</td>
-                  <td>Baseline ML</td>
-                  <td>31.50%</td>
-                  <td>0.301</td>
+                  <td className="py-2">Linear SVM</td>
+                  <td>Kernel Baseline</td>
+                  <td>40.38%</td>
+                  <td>0.402</td>
                   <td>4.1 ms</td>
                 </tr>
                 <tr>
-                  <td className="py-2">Random Forest (500 trees)</td>
-                  <td>Baseline ML</td>
-                  <td>24.10%</td>
-                  <td>0.235</td>
-                  <td>2.8 ms</td>
+                  <td className="py-2">kNN (k=5)</td>
+                  <td>Instance Baseline</td>
+                  <td>37.75%</td>
+                  <td>0.368</td>
+                  <td>8.5 ms</td>
                 </tr>
               </tbody>
             </table>
@@ -151,7 +158,7 @@ export const ReportView: React.FC = () => {
         <section className="space-y-3 border-t border-white/10 pt-6">
           <h3 className="text-lg font-bold text-white">5. Conclusions</h3>
           <p className="text-text-secondary leading-relaxed">
-            The SongNet C-RNN model successfully achieved <strong>65.23% classification accuracy</strong> on the FMA Small dataset, outperforming classical machine learning baselines by over 41%. The combination of spatial 2D convolutions for spectrogram feature extraction and recurrent GRU units for sequence modeling provides a fast, robust solution for real-time music discovery applications.
+            All models were evaluated on the 800 test tracks of the Free Music Archive (FMA) Small dataset (100 tracks per genre across 8 balanced genres). The MLP Classifier achieved <strong>53.50% test accuracy</strong> (0.5384 Macro F1), while the deep learning SongNet C-RNN reached <strong>49.25% test accuracy</strong> (57.17% training accuracy) and Random Forest achieved <strong>48.75% test accuracy</strong>, significantly outperforming the uniform random chance baseline (12.50%).
           </p>
         </section>
       </div>

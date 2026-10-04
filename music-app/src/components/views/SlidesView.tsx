@@ -94,27 +94,35 @@ export const SlidesView: React.FC = () => {
     {
       id: 5,
       title: "Benchmark Results & Evaluation",
-      subtitle: "65.23% Test Accuracy on FMA Dataset",
+      subtitle: "Full 8,000 FMA Dataset (800 Test Samples)",
       content: (
         <div className="space-y-3 py-2 text-left">
           <div className="p-4 rounded-2xl bg-gradient-to-r from-accent/20 to-card border border-accent/40 flex items-center justify-between">
             <div>
-              <span className="text-xs text-text-muted uppercase font-bold">SongNet C-RNN</span>
-              <p className="text-2xl font-black text-white">65.23% Accuracy</p>
+              <span className="text-xs text-text-muted uppercase font-bold">Deep Learning SongNet C-RNN</span>
+              <p className="text-2xl font-black text-white">49.25% Accuracy</p>
             </div>
             <span className="px-3 py-1 rounded-full bg-accent text-white text-xs font-bold">
-              +41% Over Baselines
+              57.17% Train Acc
             </span>
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-xs font-mono">
             <div className="p-2.5 rounded-xl bg-white/5 flex justify-between">
-              <span>SVM Baseline:</span>
-              <span className="text-text-secondary font-bold">31.50%</span>
+              <span>MLP Classifier:</span>
+              <span className="text-text-secondary font-bold">53.50%</span>
             </div>
             <div className="p-2.5 rounded-xl bg-white/5 flex justify-between">
               <span>Random Forest:</span>
-              <span className="text-text-secondary font-bold">24.10%</span>
+              <span className="text-text-secondary font-bold">48.75%</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-white/5 flex justify-between">
+              <span>Logistic Regression:</span>
+              <span className="text-text-secondary font-bold">43.00%</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-white/5 flex justify-between">
+              <span>Linear SVM:</span>
+              <span className="text-text-secondary font-bold">40.38%</span>
             </div>
           </div>
         </div>

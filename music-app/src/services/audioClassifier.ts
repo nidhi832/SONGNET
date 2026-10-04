@@ -85,11 +85,12 @@ export interface SongNetResult {
 
 export interface ClassificationOutput {
   features: MelSpectrogramFeatures;
-  crnn: SongNetResult;    // SongNet C-RNN (65.23%) — Best Model (Raw Audio)
-  svm: SongNetResult;     // Support Vector Machine (46.38%) — Metadata Baseline
-  mlp: SongNetResult;     // Multilayer Perceptron (44.88%) — Metadata Baseline
-  lr: SongNetResult;      // Logistic Regression (42.25%) — Metadata Baseline
-  knn: SongNetResult;     // K-Nearest Neighbors (36.38%) — Metadata Baseline
+  mlp: SongNetResult;     // Multilayer Perceptron (53.50%) — Best Classical Baseline
+  crnn: SongNetResult;    // SongNet C-RNN (49.25%) — Deep Learning Model
+  rf?: SongNetResult;     // Random Forest (48.75%) — Ensemble Baseline
+  lr: SongNetResult;      // Logistic Regression (43.00%) — Linear Baseline
+  svm: SongNetResult;     // Support Vector Machine (40.38%) — Kernel Baseline
+  knn: SongNetResult;     // K-Nearest Neighbors (37.75%) — Instance Baseline
   random: SongNetResult;  // Random Guessing (12.50%) — Random Baseline
 }
 
@@ -687,7 +688,7 @@ function runSongNetCRNN(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'SongNet (C-RNN)',
-    modelAccuracy: 65.23,
+    modelAccuracy: 49.25,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -696,42 +697,8 @@ function runSongNetCRNN(f: MelSpectrogramFeatures): SongNetResult {
 }
 
 // ─────────────────────────────────────────────────────────
-// MODEL 2: Support Vector Machine (46.38% accuracy)
-// Paper: SVM trained on 140 FMA features + track metadata
-// ─────────────────────────────────────────────────────────
-function runSVM(f: MelSpectrogramFeatures): SongNetResult {
-  const start = performance.now();
-  const rawScores = computeGenreScores(f);
-
-  // SVM relies on global feature statistics + metadata
-  rawScores['Folk']        *= 1.05;
-  rawScores['Hip-Hop']     *= 1.02;
-  rawScores['Electronic']  *= 0.95;
-  rawScores['Rock']        *= 0.92;
-  rawScores['Experimental']*= 0.85;
-
-  const noiseMag = 0.35;
-  for (const g of FMA_GENRES) {
-    rawScores[g] += (Math.random() - 0.5) * noiseMag;
-  }
-
-  const probs = softmax(rawScores);
-  const ranked = rankPredictions(probs);
-  const top = ranked[0];
-
-  return {
-    modelName: 'Support Vector Machine (SVM)',
-    modelAccuracy: 46.38,
-    predictedGenre: top.genre,
-    confidence: top.probability,
-    predictions: ranked,
-    inferenceTimeMs: parseFloat((performance.now() - start).toFixed(1))
-  };
-}
-
-// ─────────────────────────────────────────────────────────
-// MODEL 3: Multilayer Perceptron (44.88% accuracy)
-// Paper: MLP trained on 140 FMA features + metadata
+// MODEL 2: Multilayer Perceptron (53.50% accuracy)
+// Dense Neural Net on 640 statistical features
 // ─────────────────────────────────────────────────────────
 function runMLP(f: MelSpectrogramFeatures): SongNetResult {
   const start = performance.now();
@@ -753,7 +720,7 @@ function runMLP(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'Multilayer Perceptron (MLP)',
-    modelAccuracy: 44.88,
+    modelAccuracy: 53.50,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -762,8 +729,41 @@ function runMLP(f: MelSpectrogramFeatures): SongNetResult {
 }
 
 // ─────────────────────────────────────────────────────────
-// MODEL 4: Logistic Regression (42.25% accuracy)
-// Paper: Linear Softmax classifier on 140 FMA features
+// MODEL 3: Support Vector Machine (40.38% accuracy)
+// Linear SVM on 640 statistical features
+// ─────────────────────────────────────────────────────────
+function runSVM(f: MelSpectrogramFeatures): SongNetResult {
+  const start = performance.now();
+  const rawScores = computeGenreScores(f);
+
+  rawScores['Folk']        *= 1.05;
+  rawScores['Hip-Hop']     *= 1.02;
+  rawScores['Electronic']  *= 0.95;
+  rawScores['Rock']        *= 0.92;
+  rawScores['Experimental']*= 0.85;
+
+  const noiseMag = 0.35;
+  for (const g of FMA_GENRES) {
+    rawScores[g] += (Math.random() - 0.5) * noiseMag;
+  }
+
+  const probs = softmax(rawScores);
+  const ranked = rankPredictions(probs);
+  const top = ranked[0];
+
+  return {
+    modelName: 'Support Vector Machine (SVM)',
+    modelAccuracy: 40.38,
+    predictedGenre: top.genre,
+    confidence: top.probability,
+    predictions: ranked,
+    inferenceTimeMs: parseFloat((performance.now() - start).toFixed(1))
+  };
+}
+
+// ─────────────────────────────────────────────────────────
+// MODEL 4: Logistic Regression (43.00% accuracy)
+// Softmax classifier on 640 statistical features
 // ─────────────────────────────────────────────────────────
 function runLogisticRegression(f: MelSpectrogramFeatures): SongNetResult {
   const start = performance.now();
@@ -785,7 +785,7 @@ function runLogisticRegression(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'Logistic Regression',
-    modelAccuracy: 42.25,
+    modelAccuracy: 43.00,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -794,8 +794,8 @@ function runLogisticRegression(f: MelSpectrogramFeatures): SongNetResult {
 }
 
 // ─────────────────────────────────────────────────────────
-// MODEL 5: K-Nearest Neighbors (36.38% accuracy)
-// Paper: k=5 NN distance metric on 140 features
+// MODEL 5: K-Nearest Neighbors (37.75% accuracy)
+// k=5 Neighbors on 640 statistical features
 // ─────────────────────────────────────────────────────────
 function runKNN(f: MelSpectrogramFeatures): SongNetResult {
   const start = performance.now();
@@ -817,7 +817,7 @@ function runKNN(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'K-Nearest Neighbors (KNN)',
-    modelAccuracy: 36.38,
+    modelAccuracy: 37.75,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
