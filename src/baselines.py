@@ -143,7 +143,13 @@ def main():
         test_acc = float(accuracy_score(y_test, y_test_pred))
         
         prec, rec, f1, _ = precision_recall_fscore_support(y_test, y_test_pred, average='macro', zero_division=0)
-        _, _, per_class_f1, _ = precision_recall_fscore_support(y_test, y_test_pred, average=None, zero_division=0)
+        _, _, per_class_f1, _ = precision_recall_fscore_support(
+        y_test,
+        y_test_pred,
+        labels=list(range(len(GENRES))),
+        average=None,
+        zero_division=0
+        )
         
         results[name] = {
             "train_accuracy": round(train_acc, 4),
