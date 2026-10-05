@@ -76,8 +76,15 @@ def get_audio_files(fma_dir, track_info=None, limit=None):
             items.append({'track_id': tid_str, 'filepath': filepath, 'genre': genre})
             
     if limit and len(items) > limit:
-        items = items[:limit]
-        
+        per_genre = limit // len(GENRES)
+        balanced_items = []
+
+        for genre in GENRES:
+            genre_items = [item for item in items if item["genre"] == genre]
+            balanced_items.extend(genre_items[:per_genre])
+
+        items = balanced_items[:limit]
+            
     return items
 
 
