@@ -34,7 +34,10 @@ def load_fma_features(fma_dir, df_meta):
         df_feat = pd.read_csv(features_path, index_col=0, header=[0, 1, 2])
         
         # Match track IDs from df_meta
-        track_ids = [int(tid.replace('syn_', '')) if 'syn_' in tid else int(tid) for tid in df_meta['track_id']]
+        track_ids = [
+        int(str(tid).replace('syn_', '')) if 'syn_' in str(tid) else int(tid)
+        for tid in df_meta['track_id']
+        ]
         common_ids = [tid for tid in track_ids if tid in df_feat.index]
         
         if len(common_ids) < 0.5 * len(df_meta):
