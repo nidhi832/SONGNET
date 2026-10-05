@@ -1,19 +1,91 @@
 # SongNet: Real-Time Music Genre Classification
 
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C.svg?style=flat&logo=pytorch)](https://pytorch.org/)
+[![Gradio](https://img.shields.io/badge/Gradio-Demo-orange.svg)](http://127.0.0.1:7860)
+[![React](https://img.shields.io/badge/React-Vite_UI-61DAFB.svg?style=flat&logo=react)](http://localhost:5173)
+[![Accuracy](https://img.shields.io/badge/SongNet_Test_Accuracy-56.12%25-brightgreen.svg)](#-5-results--benchmark-comparison)
+[![Dataset](https://img.shields.io/badge/Dataset-FMA_Small_(8k_Tracks)-blue.svg)](https://github.com/mdeff/fma)
 
 ---
 
 ## 🎵 Overview
 
-SongNet is a temporal 1D Convolutional-Recurrent Neural Network (C-RNN) designed for classifying music into 8 distinct genres from log-Mel spectrograms. Beyond standard song-level genre prediction, SongNet outputs frame-by-frame (per-timestep) genre probability distributions, enabling real-time live audio genre classification as a song streams—fulfilling the future work proposed by the original Stanford authors.
+**SongNet** is a temporal 1D Convolutional-Recurrent Neural Network (C-RNN) designed for classifying music into 8 distinct genres from raw 128-bin log-Mel spectrograms. Beyond static song-level genre prediction, SongNet outputs frame-by-frame (per-timestep) genre probability distributions, enabling real-time live audio genre classification as a song streams—fulfilling the future work proposed by the original Stanford CS229 authors (*Zhang, Zhang, Chen, 2018*).
 
-### Key Features
-- **Temporal 1D Convolutions**: Operates along the time dimension to preserve shift invariance while learning temporal audio patterns.
-- **Stratified Data Pipeline**: 70/20/10 train/val/test split with zero data leakage (normalization parameters computed strictly on train split).
-- **Classical ML Baselines**: Evaluates kNN, Logistic Regression, MLP, and Linear SVM on hand-crafted features for direct comparison.
-- **Ablation & Recurrent Heads**: Supports both standard time-distributed Conv1d heads and unidirectional causal GRU heads.
-- **Real-Time Interactive Web Demo**: Built with Gradio to visualize running per-timestep probabilities and temporal genre heatmaps.
-- **Offline Smoke Testing**: Includes complete synthetic data generation for instant end-to-end testing without downloading external datasets.
+In our latest end-to-end training on the full 8,000-track Free Music Archive (FMA Small) dataset, **SongNet C-RNN achieved 56.12% Test Accuracy (56.88% Peak Validation Accuracy)**, officially outperforming all classical machine learning baselines:
+- **#1 SongNet C-RNN (Deep Learning)**: **56.12%** (Macro F1: 0.5400)
+- **#2 Multilayer Perceptron (MLP)**: **53.50%**
+- **#3 Random Forest (200 trees)**: **48.75%**
+- **#4 Logistic Regression**: **43.00%**
+- **#5 Linear SVM**: **40.38%**
+- **#6 kNN (k=5)**: **37.75%**
+- **#7 Random Guessing**: **12.50%**
+
+---
+
+## 🖥️ Interactive Web Applications & Live Demos
+
+The platform provides two interactive user interfaces for inference, audio testing, and comparative analysis:
+
+### 1. Python Motion Studio Backend & Gradio Dashboard
+- **URL**: [http://127.0.0.1:7860/](http://127.0.0.1:7860/)
+- **Command**: `python app.py`
+- **Features**:
+  - Live temporal genre probability curves (Plotly interactive charts)
+  - 2D temporal heatmaps tracking genre confidence across time
+  - Support for Time-Distributed Conv1D head and Causal Unidirectional GRU head
+  - Pre-loaded sample library across all 8 genres and instant microphone/file upload
+  - Classical baseline inference toggles (MLP, Random Forest, Logistic Regression, SVM, kNN)
+
+### 2. Modern React + Vite Music Platform & Spectrogram Studio
+- **URL**: [http://localhost:5173/](http://localhost:5173/)
+- **Command**: `cd music-app && npm run dev`
+- **Features**:
+  - **Real-Time 128-bin Mel Spectrogram Visualizer**: Web Audio API DSP extraction directly in the browser
+  - **All 5 Paper Classifiers**: Side-by-side probability bars comparing C-RNN against MLP, Random Forest, SVM, and kNN
+  - **Real Global Song Search & Audio Streaming**: Integrated iTunes Search API allows searching any song worldwide (*Starboy*, *Bohemian Rhapsody*, *Despacito*, *Lose Yourself*, etc.) with authentic 30-second audio stream previews (CORS-enabled)
+  - **SONGNET AI Assistant**: Ask questions about audio ML, genres, or DSP with Google Gemini integration and intelligent offline musicological fallback
+  - **Interactive Slides Deck & Research Report**: Built-in slide presentation and comprehensive academic benchmark report
+
+---
+
+## 🚀 Quick Start: Running the Servers
+
+### Prerequisites
+- Python 3.10+ with PyTorch, torchaudio, librosa, scikit-learn, gradio, soundfile
+- Node.js 18+ & npm (for the React music app)
+
+### Step 1: Install Dependencies
+```bash
+# Clone the repository
+git clone https://github.com/nidhi832/SONGNET.git
+cd SONGNET
+
+# Install Python requirements
+pip install -r requirements.txt
+
+# Install React frontend requirements
+cd music-app
+npm install
+cd ..
+```
+
+### Step 2: Launch the Servers
+
+You can run both servers simultaneously in two terminal windows:
+
+**Terminal 1 — Python Backend & Gradio Demo ([http://127.0.0.1:7860/](http://127.0.0.1:7860/)):**
+```bash
+python app.py
+```
+
+**Terminal 2 — React Music App UI ([http://localhost:5173/](http://localhost:5173/)):**
+```bash
+cd music-app
+npm run dev
+```
+
+Open [http://localhost:5173/](http://localhost:5173/) in your browser to experience the full SongNet Studio suite!
 
 ---
 
@@ -21,140 +93,76 @@ SongNet is a temporal 1D Convolutional-Recurrent Neural Network (C-RNN) designed
 
 ```
 fma_small mp3s ──► src/preprocess.py ──► data/processed/{mels.npy, meta.csv, norm.npz, genres.json}
-fma_metadata/  ──► src/baselines.py  ──► results/baselines.json
-data/processed ──► src/train.py      ──► runs/songnet/{best.pt, history.json}
-               ──► src/evaluate.py   ──► results/{songnet.json, confusion_matrix.png, comparison.md}
-runs/songnet/best.pt ──► app.py     ──► Real-Time Gradio Web Demo
+fma_metadata/  ──► src/baselines.py  ──► models/baselines.joblib (fitted models + scaler)
+data/processed ──► src/train.py      ──► models/best.pt (56.12% Test Acc)
+               ──► src/evaluate.py   ──► results/{confusion_matrix.png, comparison.md}
+models/best.pt ──► app.py            ──► Gradio Motion Studio Demo (http://127.0.0.1:7860)
+models/best.pt ──► music-app/        ──► React Spectrogram Studio (http://localhost:5173)
 ```
 
-### File Structure & Purpose
+### Repository Structure
 
-| File | Purpose |
+| Path | Description |
 | :--- | :--- |
-| `src/common.py` | Shared audio settings (22.05 kHz, 128 Mel bands), genre definitions, and Mel spectrogram processing utilities. |
-| `src/preprocess.py` | FMA-small audio extraction, log-Mel spectrogram computation, 70/20/10 stratified split, and normalization stats (`norm.npz`). |
-| `src/baselines.py` | Evaluates kNN, Logistic Regression, MLP, and Linear SVM models on hand-crafted audio features. |
-| `src/model.py` | PyTorch `SongNet` model: 3×(Conv1d-BN-ReLU-MaxPool-Dropout) + per-timestep classifier head (time-distributed or GRU). |
-| `src/train.py` | Model training loop (Adam, ReduceLROnPlateau, random-crop augmentation, early stopping checkpointing). |
-| `src/evaluate.py` | Evaluates test accuracy, macro/weighted F1, confusion matrix visualization, training curves, and comparison report. |
-| `app.py` | Interactive Gradio web application for real-time per-timestep genre probability tracking and file classification. |
-| `tests/smoke_test.py` | End-to-end test suite using synthetic data (no download needed, ~1 min runtime). |
-| `WRITEUP.md` | Formal two-page project submission write-up complying with UE24CS352A guidelines. |
-
----
-
-## 🚀 1. Setup
-
-Clone the repository and install dependencies:
-
-```bash
-git clone <your-repo-url>
-cd songnet
-pip install -r requirements.txt
-```
-
-Verify the setup by running the end-to-end smoke test (~1 min):
-
-```bash
-python -m tests.smoke_test
-```
-*Output should conclude with `SMOKE TEST PASSED`.*
-
-> **Note on Audio Backend**: MP3 decoding relies on `soundfile` / `librosa`. On Linux/Ubuntu, ensure `ffmpeg` and `libsndfile1` are installed (`sudo apt install ffmpeg libsndfile1`). On Windows/Colab, `soundfile` works out of the box.
-
----
-
-## 📦 2. Download Dataset
-
-Download the **FMA (Free Music Archive)** dataset:
-1. `fma_small.zip` (~7.2 GB) - 8,000 tracks (30s clips, 8 genres, 1,000 tracks each).
-2. `fma_metadata.zip` (~342 MB) - Track metadata and hand-crafted features.
-
-Unzip into the `data/fma/` directory:
-
-```
-data/fma/
-├── fma_small/
-│   ├── 000/
-│   │   ├── 000002.mp3
-│   │   └── ...
-│   └── 155/
-└── fma_metadata/
-    ├── tracks.csv
-    └── features.csv
-```
-
----
-
-## 🏃 3. Execution Commands
-
-### Quick Dry Run (~2-3 min)
-Run preprocessing on a subset of 400 tracks to verify execution before full processing:
-
-```bash
-python -m src.preprocess --fma_dir data/fma --out_dir data/processed_small --limit 400
-```
-
-### Full Pipeline Run
-
-```bash
-# 1. Preprocess full dataset (~20-40 min, run once)
-python -m src.preprocess --fma_dir data/fma --out_dir data/processed
-
-# 2. Train classical ML baselines
-python -m src.baselines --fma_dir data/fma --data_dir data/processed --out_dir results
-
-# 3. Train SongNet model
-python -m src.train --data_dir data/processed --out_dir runs/songnet --epochs 30
-
-# 4. Evaluate model & generate comparison artifacts
-python -m src.evaluate --data_dir data/processed --run_dir runs/songnet --results_dir results
-
-# 5. Launch Interactive Gradio Web Demo
-python app.py --ckpt runs/songnet/best.pt
-```
-*(Add `--share` when running on Google Colab / Kaggle for a public URL).*
-
----
-
-## 🧪 4. Experimental Ablation Studies
-
-Run these commands to compare architectural variants for your write-up:
-
-```bash
-# Experiment A: Causal Unidirectional GRU Head vs. Time-Distributed Head
-python -m src.train --head gru --out_dir runs/songnet_gru
-python -m src.evaluate --data_dir data/processed --run_dir runs/songnet_gru --results_dir results_gru
-
-# Experiment B: Regularization Tuning (Higher Dropout = 0.5)
-python -m src.train --dropout 0.5 --out_dir runs/songnet_drop05
-python -m src.evaluate --data_dir data/processed --run_dir runs/songnet_drop05 --results_dir results_drop05
-
-# Experiment C: Effect of Random-Crop Data Augmentation (Disable Crop)
-python -m src.train --crop 0 --out_dir runs/songnet_nocrop
-python -m src.evaluate --data_dir data/processed --run_dir runs/songnet_nocrop --results_dir results_nocrop
-```
+| `app.py` | Python Gradio backend server running on `http://127.0.0.1:7860/`. |
+| `kaggle_songnet.ipynb` | Complete, self-contained Kaggle notebook with training runs, loss curves, and evaluation. |
+| `models/best.pt` | PyTorch checkpoint for trained SongNet C-RNN model (56.12% Test Accuracy). |
+| `models/baselines.joblib` | Compressed scikit-learn baselines (MLP, Random Forest, Logistic Regression, Linear SVM, kNN). |
+| `models/confusion_matrix.png` | Genre confusion matrix on the 800 test tracks. |
+| `music-app/` | Modern React + TypeScript + Tailwind Vite application running on `http://localhost:5173/`. |
+| `src/model.py` | PyTorch `SongNet` definition: 3×Conv1D backbone with Time-Distributed and GRU heads. |
+| `src/common.py` | Audio DSP constants (22.05 kHz, 128 Mel bins, 8 FMA genres). |
+| `src/preprocess.py` | Extracts log-Mel spectrograms from FMA Small into stratified 70/20/10 splits. |
+| `src/baselines.py` | Trains and evaluates classical ML baselines on 640 statistical features. |
+| `src/train.py` | PyTorch training loop with Cosine Annealing, AdamW, and random temporal slicing. |
+| `src/evaluate.py` | Generates confusion matrices, classification reports, and benchmark metrics. |
+| `results/comparison.md` | Formal accuracy and F1 score comparison table. |
+| `tests/smoke_test.py` | Fast synthetic end-to-end smoke test (~1 min). |
+| `WRITEUP.md` | Formal two-page academic report complying with Stanford CS229 / university guidelines. |
 
 ---
 
 ## 📊 5. Results & Benchmark Comparison
 
-Summary table from `results/comparison.md` (Evaluated on 800 test tracks across 8 balanced genres):
+Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-second tracks across 8 genres, 800 test tracks):
 
-| Model / Baseline | Input Representation | Test Accuracy | Macro F1 Score |
-| :--- | :--- | :---: | :---: |
-| **SongNet (Our PyTorch Re-impl)** | Log-Mel Spectrogram (Raw Audio) | **56.12%** | **0.5400** |
-| **MLP Classifier** | 640 Statistical Mel Features | **53.50%** | **0.5384** |
-| **Random Forest (200 trees)** | 640 Statistical Mel Features | **48.75%** | **0.4755** |
-| **Logistic Regression** | 640 Statistical Mel Features | **43.00%** | **0.4268** |
-| **Linear SVM** | 640 Statistical Mel Features | **40.38%** | **0.4017** |
-| **kNN (k=5)** | 640 Statistical Mel Features | **37.75%** | **0.3675** |
-| **Random Guessing** | Uniform Random Choice (1 / 8) | **12.50%** | **0.1250** |
+| Model / Baseline | Input Representation | Test Accuracy | Macro F1 Score | Status |
+| :--- | :--- | :---: | :---: | :---: |
+| **SongNet C-RNN (Deep Learning)** | **Log-Mel Spectrogram (Raw Audio)** | **56.12%** | **0.5400** | **#1 Best Overall** |
+| **Multilayer Perceptron (MLP)** | 640 Statistical Mel Features | **53.50%** | **0.5384** | Classical Baseline |
+| **Random Forest (200 trees)** | 640 Statistical Mel Features | **48.75%** | **0.4755** | Ensemble Baseline |
+| **Logistic Regression** | 640 Statistical Mel Features | **43.00%** | **0.4268** | Linear Baseline |
+| **Linear SVM** | 640 Statistical Mel Features | **40.38%** | **0.4017** | Kernel Baseline |
+| **kNN (k=5)** | 640 Statistical Mel Features | **37.75%** | **0.3675** | Instance Baseline |
+| **Random Baseline** | Uniform Random Choice (1 / 8) | **12.50%** | **0.1250** | Theoretical Minimum |
 
-### Confusion Matrix & Genre Analysis (Test Acc: 56.12%)
-- **Top Performing Genres**: *Rock* (77% recall), *Hip-Hop* (75% recall), *Folk* (74% recall), and *International* (71% recall) yield the highest per-class scores due to distinct rhythmic signatures and harmonic structures.
-- **Mid & Challenging Genres**: *Electronic* (56% recall) and *Instrumental* (50% recall) achieve strong classification. *Experimental* (37% recall) and *Pop* (9% recall) represent complex cross-boundary genres that share timbral overlap with adjacent genres.
+### Per-Class Recall Breakdown (SongNet C-RNN - Test Acc: 56.12%)
+- **Rock**: 77% recall (77/100 correct)
+- **Hip-Hop**: 75% recall (75/100 correct)
+- **Folk**: 74% recall (74/100 correct)
+- **International**: 71% recall (71/100 correct)
+- **Electronic**: 56% recall (56/100 correct)
+- **Instrumental**: 50% recall (50/100 correct)
+- **Experimental**: 37% recall (37/100 correct)
+- **Pop**: 9% recall (9/100 correct)
+
+### Confusion Matrix
+The confusion matrix is saved at `models/confusion_matrix.png` and `results/confusion_matrix.png`. Rock, Hip-Hop, Folk, and International demonstrate high precision and recall, while Experimental and Pop show cross-genre acoustic dispersion as reported in the original Stanford CS229 paper.
 
 ---
 
+## 🔬 Deep Learning Optimizations Applied
 
+The model was optimized in `kaggle_songnet.ipynb` using 4 core techniques:
+1. **Raw Logit Pooling**: Averaging unnormalized temporal logits before `nn.CrossEntropyLoss(label_smoothing=0.05)` to eliminate gradient vanishing.
+2. **Audio Data Augmentation**: Random temporal window slicing (600 frames $\approx 14$s) paired with frequency and time masking (SpecAugment) across the 5,600 training songs.
+3. **Cosine Annealing Learning Rate**: AdamW with `CosineAnnealingLR` decaying smoothly over 35 epochs from $10^{-3}$ down to $10^{-5}$.
+4. **Gradient Clipping**: Stabilized backpropagation with `clip_grad_norm_ = 1.0`.
+
+---
+
+## 🌐 Endpoints Summary
+
+- **Local Python Gradio App**: `http://127.0.0.1:7860/`
+- **Local React Music App**: `http://localhost:5173/`
+- **GitHub Repository**: [https://github.com/nidhi832/SONGNET](https://github.com/nidhi832/SONGNET)
