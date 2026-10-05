@@ -203,7 +203,14 @@ def main():
     test_acc = float(accuracy_score(test_labels, y_pred))
     prec, rec, f1, _ = precision_recall_fscore_support(test_labels, y_pred, average='macro', zero_division=0)
     weighted_prec, weighted_rec, weighted_f1, _ = precision_recall_fscore_support(test_labels, y_pred, average='weighted', zero_division=0)
-    _, _, per_class_f1, _ = precision_recall_fscore_support(test_labels, y_pred, average=None, zero_division=0)
+    _, _, per_class_f1, _ = precision_recall_fscore_support(
+    test_labels,
+    y_pred,
+    labels=list(range(len(GENRES))),
+    average=None,
+    zero_division=0
+)
+    
 
     songnet_res = {
         "test_accuracy": round(test_acc, 4),
@@ -215,7 +222,13 @@ def main():
     }
 
     print(f"Test Accuracy: {test_acc*100:.2f}% | Macro F1: {f1:.4f} | Weighted F1: {weighted_f1:.4f}\n")
-    print(classification_report(test_labels, y_pred, target_names=GENRES, zero_division=0))
+    print(classification_report(
+    test_labels,
+    y_pred,
+    labels=list(range(len(GENRES))),
+    target_names=GENRES,
+    zero_division=0
+))
 
     # Save JSON summary
     json_path = os.path.join(args.results_dir, "songnet.json")
