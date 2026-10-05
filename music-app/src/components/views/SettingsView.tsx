@@ -369,7 +369,7 @@ export const SettingsView: React.FC = () => {
                       onChange={(e) => setDefaultModel(e.target.value)}
                       className="w-full px-4 py-3 rounded-2xl bg-black/40 border border-white/10 text-white text-xs font-medium focus:outline-none focus:border-accent"
                     >
-                      <option value="c-rnn">SongNet C-RNN (57.17% Deep Learning - Recommended)</option>
+                      <option value="c-rnn">SongNet C-RNN (56.12% Deep Learning - Recommended #1)</option>
                       <option value="mlp">Multilayer Perceptron MLP (53.50% Baseline)</option>
                       <option value="rf">Random Forest (48.75% Baseline)</option>
                       <option value="lr">Logistic Regression (43.00% Baseline)</option>

@@ -143,7 +143,7 @@ Summary table from `results/comparison.md` (Evaluated on 800 test tracks across 
 
 | Model / Baseline | Input Representation | Test Accuracy | Macro F1 Score |
 | :--- | :--- | :---: | :---: |
-| **SongNet (Our PyTorch Re-impl)** | Log-Mel Spectrogram (Raw Audio) | **57.17%** | **0.5782** |
+| **SongNet (Our PyTorch Re-impl)** | Log-Mel Spectrogram (Raw Audio) | **56.12%** | **0.5400** |
 | **MLP Classifier** | 640 Statistical Mel Features | **53.50%** | **0.5384** |
 | **Random Forest (200 trees)** | 640 Statistical Mel Features | **48.75%** | **0.4755** |
 | **Logistic Regression** | 640 Statistical Mel Features | **43.00%** | **0.4268** |
@@ -151,9 +151,9 @@ Summary table from `results/comparison.md` (Evaluated on 800 test tracks across 
 | **kNN (k=5)** | 640 Statistical Mel Features | **37.75%** | **0.3675** |
 | **Random Guessing** | Uniform Random Choice (1 / 8) | **12.50%** | **0.1250** |
 
-### Confusion Matrix & Genre Analysis
-- **Easiest Genres**: *Hip-Hop* (83% recall, 0.65 F1) and *Folk* (78% recall, 0.64 F1) yield the highest per-class scores due to prominent drum patterns, steady rhythmic transients, and distinct acoustic harmonic features.
-- **Hardest Genres**: Consistent with the Stanford CS229 paper, **Experimental** (29% recall, 0.36 F1) and **Pop** (1% recall, 0.02 F1) present the highest confusion. Pop shares timbral characteristics with Rock, Electronic, and International, while Experimental spans varied non-standard avant-garde distributions.
+### Confusion Matrix & Genre Analysis (Test Acc: 56.12%)
+- **Top Performing Genres**: *Rock* (77% recall), *Hip-Hop* (75% recall), *Folk* (74% recall), and *International* (71% recall) yield the highest per-class scores due to distinct rhythmic signatures and harmonic structures.
+- **Mid & Challenging Genres**: *Electronic* (56% recall) and *Instrumental* (50% recall) achieve strong classification. *Experimental* (37% recall) and *Pop* (9% recall) represent complex cross-boundary genres that share timbral overlap with adjacent genres.
 
 ---
 

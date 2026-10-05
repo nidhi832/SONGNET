@@ -198,24 +198,36 @@ export const GeminiAssistantView: React.FC = () => {
                   </div>
                 )}
 
+                {/* Audio Preview Player */}
+                {fetchedTrack.audioUrl && (
+                  <div className="pt-2">
+                    <span className="text-[11px] font-bold text-text-muted block mb-1.5">🎧 30-Second Audio Stream Preview:</span>
+                    <audio controls src={fetchedTrack.audioUrl} className="w-full h-9 rounded-xl bg-black/40 border border-white/10" />
+                  </div>
+                )}
+
                 {/* Action Buttons */}
-                <div className="flex items-center gap-2 pt-2">
+                <div className="flex flex-col gap-2 pt-2">
                   <button
                     onClick={() => {
                       playTrack(fetchedTrack);
                       navigateTo('classifier');
                     }}
-                    className="flex-1 py-2.5 rounded-xl bg-accent hover:bg-accent-hover text-white text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-accent/25"
+                    className="w-full py-3 rounded-xl bg-accent hover:bg-accent-hover text-white text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-accent/25"
                   >
                     <Play className="w-4 h-4 fill-current" />
-                    <span>Play & Classify Track</span>
+                    <span>Play & Test in SongNet C-RNN (56.12%)</span>
                   </button>
                   <button
-                    onClick={() => navigateTo('classifier')}
-                    className="px-3 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all cursor-pointer"
+                    onClick={() => {
+                      playTrack(fetchedTrack);
+                      navigateTo('classifier');
+                    }}
+                    className="w-full py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium flex items-center justify-center gap-2 transition-all cursor-pointer"
                     title="Open Spectrogram Classifier"
                   >
-                    <Cpu className="w-4 h-4" />
+                    <Cpu className="w-4 h-4 text-accent" />
+                    <span>Open Spectrogram Studio Classifier</span>
                   </button>
                 </div>
               </div>

@@ -110,8 +110,8 @@ export const ReportView: React.FC = () => {
                 <tr className="text-accent font-bold">
                   <td className="py-2">SongNet (C-RNN)</td>
                   <td>Hybrid C-RNN (Raw Audio)</td>
-                  <td>57.17%</td>
-                  <td>0.578</td>
+                  <td>56.12%</td>
+                  <td>0.540</td>
                   <td>14.2 ms</td>
                 </tr>
                 <tr className="text-white font-semibold">
@@ -158,7 +158,7 @@ export const ReportView: React.FC = () => {
         <section className="space-y-3 border-t border-white/10 pt-6">
           <h3 className="text-lg font-bold text-white">5. Conclusions</h3>
           <p className="text-text-secondary leading-relaxed">
-            The deep learning SongNet C-RNN achieved the highest overall performance with <strong>57.17% accuracy</strong>, successfully outperforming all classical machine learning baselines (MLP 53.50%, Random Forest 48.75%, Logistic Regression 43.00%, Linear SVM 40.38%, kNN 37.75%) on the Free Music Archive (FMA) dataset.
+            The deep learning SongNet C-RNN achieved the highest overall performance with <strong>56.12% test accuracy</strong>, successfully outperforming all classical machine learning baselines (MLP 53.50%, Random Forest 48.75%, Logistic Regression 43.00%, Linear SVM 40.38%, kNN 37.75%) on the Free Music Archive (FMA) dataset.
           </p>
         </section>
       </div>

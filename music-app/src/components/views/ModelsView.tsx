@@ -187,7 +187,7 @@ export const ModelsView: React.FC = () => {
             <ul className="space-y-2 text-xs text-text-secondary leading-relaxed">
               <li className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                <span><strong>SongNet C-RNN (57.17%)</strong> achieves the highest classification performance, outperforming the best classical baseline (MLP 53.50%) and Random Forest (48.75%).</span>
+                <span><strong>SongNet C-RNN (56.12%)</strong> achieves the highest classification performance on the test set, outperforming the best classical baseline (MLP 53.50%) and Random Forest (48.75%).</span>
               </li>
               <li className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-accent shrink-0 mt-0.5" />

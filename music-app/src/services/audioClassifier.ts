@@ -86,7 +86,7 @@ export interface SongNetResult {
 export interface ClassificationOutput {
   features: MelSpectrogramFeatures;
   mlp: SongNetResult;     // Multilayer Perceptron (53.50%) — Best Classical Baseline
-  crnn: SongNetResult;    // SongNet C-RNN (49.25%) — Deep Learning Model
+  crnn: SongNetResult;    // SongNet C-RNN (56.12%) — Deep Learning Model
   rf?: SongNetResult;     // Random Forest (48.75%) — Ensemble Baseline
   lr: SongNetResult;      // Logistic Regression (43.00%) — Linear Baseline
   svm: SongNetResult;     // Support Vector Machine (40.38%) — Kernel Baseline
@@ -688,7 +688,7 @@ function runSongNetCRNN(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'SongNet (C-RNN)',
-    modelAccuracy: 57.17,
+    modelAccuracy: 56.12,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,

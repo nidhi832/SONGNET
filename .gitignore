@@ -26,3 +26,5 @@ results/baselines.joblib
 *.log
 scratch/
 .DS_Store
+models.zip
+ML PROJECT/

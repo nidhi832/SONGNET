@@ -100,10 +100,10 @@ export const SlidesView: React.FC = () => {
           <div className="p-4 rounded-2xl bg-gradient-to-r from-accent/20 to-card border border-accent/40 flex items-center justify-between">
             <div>
               <span className="text-xs text-text-muted uppercase font-bold">Deep Learning SongNet C-RNN</span>
-              <p className="text-2xl font-black text-white">57.17% Accuracy</p>
+              <p className="text-2xl font-black text-white">56.12% Accuracy</p>
             </div>
             <span className="px-3 py-1 rounded-full bg-accent text-white text-xs font-bold">
-              Best Model Overall
+              Best Model Overall (#1)
             </span>
           </div>
 

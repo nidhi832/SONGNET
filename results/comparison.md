@@ -4,7 +4,7 @@ Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-secon
 
 | Model / Baseline | Input Representation | Test Accuracy | Macro F1 Score |
 | :--- | :--- | :---: | :---: |
-| **SongNet (Our PyTorch Re-impl)** | Log-Mel Spectrogram (Raw Audio) | **57.17%** | **0.5782** |
+| **SongNet (Our PyTorch Re-impl)** | Log-Mel Spectrogram (Raw Audio) | **56.12%** | **0.5400** |
 | **MLP Classifier** | 640 Statistical Mel Features | **53.50%** | **0.5384** |
 | **Random Forest (200 trees)** | 640 Statistical Mel Features | **48.75%** | **0.4755** |
 | **Logistic Regression** | 640 Statistical Mel Features | **43.00%** | **0.4268** |
@@ -12,12 +12,12 @@ Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-secon
 | **kNN (k=5)** | 640 Statistical Mel Features | **37.75%** | **0.3675** |
 | **Random Guessing** | Uniform Random Choice (1 / 8) | **12.50%** | **0.1250** |
 
-### Per-Class Performance Summary (SongNet C-RNN)
-- **Hip-Hop**: Recall 83%, Precision 53%, F1 0.65
-- **Folk**: Recall 78%, Precision 55%, F1 0.64
-- **International**: Recall 73%, Precision 32%, F1 0.44
-- **Rock**: Recall 50%, Precision 68%, F1 0.57
-- **Electronic**: Recall 48%, Precision 74%, F1 0.58
-- **Instrumental**: Recall 32%, Precision 48%, F1 0.39
-- **Experimental**: Recall 29%, Precision 47%, F1 0.36
-- **Pop**: Recall 1%, Precision 25%, F1 0.02
+### Per-Class Performance Summary (SongNet C-RNN - Test Acc: 56.12%)
+- **Rock**: Recall 77% (77/100 correct)
+- **Hip-Hop**: Recall 75% (75/100 correct)
+- **Folk**: Recall 74% (74/100 correct)
+- **International**: Recall 71% (71/100 correct)
+- **Electronic**: Recall 56% (56/100 correct)
+- **Instrumental**: Recall 50% (50/100 correct)
+- **Experimental**: Recall 37% (37/100 correct)
+- **Pop**: Recall 9% (9/100 correct)
