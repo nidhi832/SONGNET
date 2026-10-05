@@ -59,12 +59,13 @@ class SongNet(nn.Module):
         else:
             raise ValueError(f"Unknown head type: {head}. Choose 'time_distributed' or 'gru'.")
 
-    def forward(self, x):
+    def forward(self, x, return_logits=False):
         """
         Input x: (Batch, Channels=128, Timesteps=T)
         Returns:
             song_probs: (Batch, num_classes) - Average predicted probability across timesteps
             step_probs: (Batch, num_classes, T_down) - Frame-by-frame genre probabilities
+            (If return_logits=True, returns: song_logits, song_probs, step_probs)
         """
         # Feature extraction through 1D Convolutions
         feat = self.conv1(x)  # (B, 128, T/2)
@@ -86,6 +87,10 @@ class SongNet(nn.Module):
 
         # Aggregate across timesteps via mean pooling to obtain song-level probability
         song_probs = torch.mean(step_probs, dim=2)  # (B, num_classes)
+
+        if return_logits:
+            song_logits = torch.mean(step_logits, dim=2)
+            return song_logits, song_probs, step_probs
 
         return song_probs, step_probs
 
