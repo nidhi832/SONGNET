@@ -85,12 +85,12 @@ export interface SongNetResult {
 
 export interface ClassificationOutput {
   features: MelSpectrogramFeatures;
-  mlp: SongNetResult;     // Multilayer Perceptron (53.50%) — Best Classical Baseline
-  crnn: SongNetResult;    // SongNet C-RNN (56.12%) — Deep Learning Model
-  rf: SongNetResult;      // Random Forest (48.75%) — Ensemble Baseline
-  lr: SongNetResult;      // Logistic Regression (43.00%) — Linear Baseline
-  svm: SongNetResult;     // Support Vector Machine (40.38%) — Kernel Baseline
-  knn: SongNetResult;     // K-Nearest Neighbors (37.75%) — Instance Baseline
+  crnn: SongNetResult;    // SongNet GRU / CRNN (59.75%) — Peak Deep Learning Model
+  lr: SongNetResult;      // Logistic Regression (56.12%) — Best Classical Baseline
+  rf: SongNetResult;      // Random Forest (55.38%) — Ensemble Baseline
+  mlp: SongNetResult;     // Multilayer Perceptron (54.50%) — Dense Baseline
+  svm: SongNetResult;     // Linear SVM (50.88%) — Kernel Baseline
+  knn: SongNetResult;     // K-Nearest Neighbors (46.38%) — Instance Baseline
   random: SongNetResult;  // Random Guessing (12.50%) — Random Baseline
 }
 
@@ -673,25 +673,25 @@ function runSongNetCRNN(f: MelSpectrogramFeatures): SongNetResult {
   // → better differentiation due to temporal context
   const rawScores = computeGenreScores(f);
 
-  // C-RNN boost: aligned with trained 56.12% model per-class test recall:
-  // Rock (77%), Hip-Hop (75%), Folk (74%), International (71%),
-  // Electronic (56%), Instrumental (50%), Experimental (37%), Pop (9%)
-  rawScores['Rock']          *= 1.25;
-  rawScores['Hip-Hop']       *= 1.22;
-  rawScores['Folk']          *= 1.20;
-  rawScores['International'] *= 1.16;
-  rawScores['Electronic']    *= 1.05;
-  rawScores['Instrumental']   *= 1.00;
-  rawScores['Experimental']   *= 0.85;
-  rawScores['Pop']            *= 0.75;
+  // GRU / CRNN boost: aligned with evaluated 59.75% model per-class test recall:
+  // Folk (79%), Hip-Hop (78%), Rock (73%), International (68%),
+  // Electronic (64%), Experimental (47%), Instrumental (41%), Pop (28%)
+  rawScores['Folk']          *= 1.25;
+  rawScores['Hip-Hop']       *= 1.24;
+  rawScores['Rock']          *= 1.18;
+  rawScores['International'] *= 1.14;
+  rawScores['Electronic']    *= 1.10;
+  rawScores['Experimental']   *= 0.95;
+  rawScores['Instrumental']   *= 0.88;
+  rawScores['Pop']            *= 0.76;
 
   const probs = softmax(rawScores);
   const ranked = rankPredictions(probs);
   const top = ranked[0];
 
   return {
-    modelName: 'SongNet (C-RNN)',
-    modelAccuracy: 56.12,
+    modelName: 'SongNet (GRU / CRNN)',
+    modelAccuracy: 59.75,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -723,7 +723,7 @@ function runMLP(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'Multilayer Perceptron (MLP)',
-    modelAccuracy: 53.50,
+    modelAccuracy: 54.50,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -732,7 +732,7 @@ function runMLP(f: MelSpectrogramFeatures): SongNetResult {
 }
 
 // ─────────────────────────────────────────────────────────
-// MODEL 3: Random Forest (48.75% accuracy)
+// MODEL 3: Random Forest (55.38% accuracy)
 // 200 Decision Trees on 640 statistical features
 // ─────────────────────────────────────────────────────────
 function runRandomForest(f: MelSpectrogramFeatures): SongNetResult {
@@ -756,7 +756,7 @@ function runRandomForest(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'Random Forest',
-    modelAccuracy: 48.75,
+    modelAccuracy: 55.38,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -765,7 +765,7 @@ function runRandomForest(f: MelSpectrogramFeatures): SongNetResult {
 }
 
 // ─────────────────────────────────────────────────────────
-// MODEL 4: Support Vector Machine (40.38% accuracy)
+// MODEL 4: Linear SVM (50.88% accuracy)
 // Linear SVM on 640 statistical features
 // ─────────────────────────────────────────────────────────
 function runSVM(f: MelSpectrogramFeatures): SongNetResult {
@@ -788,8 +788,8 @@ function runSVM(f: MelSpectrogramFeatures): SongNetResult {
   const top = ranked[0];
 
   return {
-    modelName: 'Support Vector Machine (SVM)',
-    modelAccuracy: 40.38,
+    modelName: 'Linear SVM',
+    modelAccuracy: 50.88,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -798,7 +798,7 @@ function runSVM(f: MelSpectrogramFeatures): SongNetResult {
 }
 
 // ─────────────────────────────────────────────────────────
-// MODEL 4: Logistic Regression (43.00% accuracy)
+// MODEL 5: Logistic Regression (56.12% accuracy)
 // Softmax classifier on 640 statistical features
 // ─────────────────────────────────────────────────────────
 function runLogisticRegression(f: MelSpectrogramFeatures): SongNetResult {
@@ -821,7 +821,7 @@ function runLogisticRegression(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'Logistic Regression',
-    modelAccuracy: 43.00,
+    modelAccuracy: 56.12,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -830,7 +830,7 @@ function runLogisticRegression(f: MelSpectrogramFeatures): SongNetResult {
 }
 
 // ─────────────────────────────────────────────────────────
-// MODEL 5: K-Nearest Neighbors (37.75% accuracy)
+// MODEL 6: K-Nearest Neighbors (46.38% accuracy)
 // k=5 Neighbors on 640 statistical features
 // ─────────────────────────────────────────────────────────
 function runKNN(f: MelSpectrogramFeatures): SongNetResult {
@@ -853,7 +853,7 @@ function runKNN(f: MelSpectrogramFeatures): SongNetResult {
 
   return {
     modelName: 'K-Nearest Neighbors (KNN)',
-    modelAccuracy: 37.75,
+    modelAccuracy: 46.38,
     predictedGenre: top.genre,
     confidence: top.probability,
     predictions: ranked,
@@ -899,9 +899,9 @@ export function runAllModels(features: MelSpectrogramFeatures): ClassificationOu
   return {
     features,
     crnn:   runSongNetCRNN(features),
-    mlp:    runMLP(features),
-    rf:     runRandomForest(features),
     lr:     runLogisticRegression(features),
+    rf:     runRandomForest(features),
+    mlp:    runMLP(features),
     svm:    runSVM(features),
     knn:    runKNN(features),
     random: runRandomGuessing(),

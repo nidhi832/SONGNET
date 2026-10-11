@@ -62,7 +62,7 @@ const PIPELINE_STEPS = [
   { id: 'classifying',label: 'Running CS229 paper model classifiers', icon: Brain     },
 ];
 
-const MODEL_ORDER = ['crnn', 'mlp', 'rf', 'lr', 'svm', 'knn', 'random'] as const;
+const MODEL_ORDER = ['crnn', 'lr', 'rf', 'mlp', 'svm', 'knn', 'random'] as const;
 type ModelKey = typeof MODEL_ORDER[number];
 
 export const ClassifierView: React.FC = () => {
@@ -251,7 +251,7 @@ export const ClassifierView: React.FC = () => {
       const targetGenre = (track.predictedGenre || track.genre) as any;
       output.crnn.predictedGenre = targetGenre;
       output.crnn.confidence = track.confidenceScore || 0.94;
-      output.crnn.modelAccuracy = 56.12;
+      output.crnn.modelAccuracy = 59.75;
 
       setUploadState({
         phase: 'done',
@@ -294,7 +294,7 @@ export const ClassifierView: React.FC = () => {
           </h1>
           <p className="text-text-secondary text-sm leading-relaxed">
             Implements the SongNet pipeline: <strong className="text-white">128-bin Log-Mel Spectrogram</strong> extraction
-            at 22.05 kHz → all 5 models from the paper: <span className="text-accent font-semibold">C-RNN (56.12% Test Accuracy), MLP (53.50%), Random Forest (48.75%), Logistic Regression (43.00%), Linear SVM (40.38%), kNN (37.75%)</span>.
+            at 22.05 kHz → all benchmark models: <span className="text-accent font-semibold">SongNet GRU / CRNN (59.75% Test Accuracy, Macro F1 0.5897), Logistic Regression (56.12%), Random Forest (55.38%), MLP (54.50%), Linear SVM (50.88%), kNN (46.38%)</span>.
           </p>
         </div>
       </div>
@@ -743,13 +743,13 @@ export const ClassifierView: React.FC = () => {
               <div className="flex justify-between">
                 <span>Architecture:</span>
                 <span className="text-accent font-bold">
-                  {mode === 'upload' && displayedModel ? displayedModel.modelName : 'SongNet (4×Conv2D + 2×GRU)'}
+                  {mode === 'upload' && displayedModel ? displayedModel.modelName : 'SongNet (GRU / CRNN)'}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>Test Accuracy (FMA):</span>
                 <span className="text-white font-bold">
-                  {mode === 'upload' && displayedModel ? `${displayedModel.modelAccuracy}%` : '56.12%'}
+                  {mode === 'upload' && displayedModel ? `${displayedModel.modelAccuracy}%` : '59.75%'}
                 </span>
               </div>
               <div className="flex justify-between">

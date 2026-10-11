@@ -14,10 +14,10 @@ export const ModelsView: React.FC = () => {
             <Layers className="w-3.5 h-3.5" /> Model Architecture & Benchmark
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-            SongNet (C-RNN) vs Baselines
+            SongNet (GRU / CRNN) vs Baselines
           </h1>
           <p className="text-text-secondary text-sm md:text-base leading-relaxed">
-            Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-second audio tracks across 8 genres). Deep Learning SongNet C-RNN achieves 56.12% test classification accuracy (57.17% train accuracy), outperforming all classical baseline models (MLP 53.50%, Random Forest 48.75%, Logistic Regression 43.00%, Linear SVM 40.38%, kNN 37.75%).
+            Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-second audio tracks across 8 genres, 800-track test set). Deep Learning SongNet GRU / CRNN reaches <strong className="text-white">59.75% test accuracy (Macro F1 0.5897)</strong>, improving by +3.63 percentage points over the best classical baseline (Logistic Regression 56.12%, Random Forest 55.38%, MLP 54.50%, Linear SVM 50.88%, kNN 46.38%).
           </p>
         </div>
       </div>
@@ -89,8 +89,8 @@ export const ModelsView: React.FC = () => {
               {[
                 { title: 'Audio Input', desc: 'Raw Audio Waveform (22.05 kHz)' },
                 { title: 'Mel-Spectrogram', desc: 'STFT Window: 2048, 128 Mel Bins' },
-                { title: '3x Conv1D Layers', desc: 'Temporal-Spectral Feature Extraction (ReLU, BatchNorm, Dropout)' },
-                { title: 'TimeDistributed FC', desc: 'Per-Timestep Softmax Genre Probability & Mean Vector' }
+                { title: '3x Conv1D Blocks', desc: 'Channels 128 → 256 (ReLU, BatchNorm, Dropout 0.3)' },
+                { title: 'Unidirectional GRU', desc: 'Hidden size 128 + Linear classifier per timestep' }
               ].map((step, i) => (
                 <div key={i} className="p-3.5 rounded-2xl bg-white/5 border border-white/5 text-center space-y-1">
                   <span className="inline-block px-2 py-0.5 rounded bg-accent/20 text-accent text-[10px] font-bold font-mono">
@@ -187,11 +187,11 @@ export const ModelsView: React.FC = () => {
             <ul className="space-y-2 text-xs text-text-secondary leading-relaxed">
               <li className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                <span><strong>SongNet C-RNN (56.12%)</strong> achieves the highest classification performance on the test set, outperforming the best classical baseline (MLP 53.50%) and Random Forest (48.75%).</span>
+                <span><strong>SongNet GRU / CRNN (59.75%, Macro F1 0.5897)</strong> reaches peak classification accuracy, beating the best classical baseline (Logistic Regression 56.12%) by 3.63 percentage points.</span>
               </li>
               <li className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                <span>While baselines require 640 hand-crafted statistical features, SongNet C-RNN learns end-to-end temporal and harmonic representations directly from raw log-Mel spectrograms.</span>
+                <span>While baselines require 640 hand-crafted statistical features, SongNet GRU / CRNN learns end-to-end temporal-recurrent representations directly from raw log-Mel spectrograms.</span>
               </li>
             </ul>
           </div>
