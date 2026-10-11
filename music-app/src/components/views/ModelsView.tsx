@@ -17,7 +17,7 @@ export const ModelsView: React.FC = () => {
             SongNet (C-RNN) vs Baselines
           </h1>
           <p className="text-text-secondary text-sm md:text-base leading-relaxed">
-            Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-second audio tracks across 8 genres). Deep Learning SongNet C-RNN achieves 57.17% classification accuracy, outperforming all classical baseline models (MLP 53.50%, Random Forest 48.75%, Logistic Regression 43.00%, Linear SVM 40.38%, kNN 37.75%).
+            Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-second audio tracks across 8 genres). Deep Learning SongNet C-RNN achieves 56.12% test classification accuracy (57.17% train accuracy), outperforming all classical baseline models (MLP 53.50%, Random Forest 48.75%, Logistic Regression 43.00%, Linear SVM 40.38%, kNN 37.75%).
           </p>
         </div>
       </div>

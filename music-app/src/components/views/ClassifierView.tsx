@@ -62,7 +62,7 @@ const PIPELINE_STEPS = [
   { id: 'classifying',label: 'Running CS229 paper model classifiers', icon: Brain     },
 ];
 
-const MODEL_ORDER = ['crnn', 'svm', 'mlp', 'lr', 'knn', 'random'] as const;
+const MODEL_ORDER = ['crnn', 'mlp', 'rf', 'lr', 'svm', 'knn', 'random'] as const;
 type ModelKey = typeof MODEL_ORDER[number];
 
 export const ClassifierView: React.FC = () => {
@@ -275,7 +275,7 @@ export const ClassifierView: React.FC = () => {
   const isCurrentPlaying = currentTrack?.id === selectedTrack.id && isPlaying;
 
   const displayedModel: SongNetResult | null = uploadState.output
-    ? uploadState.output[activeModel]
+    ? (uploadState.output[activeModel] ?? null)
     : null;
 
   return (
@@ -621,13 +621,14 @@ export const ClassifierView: React.FC = () => {
             <div className="p-5 rounded-3xl bg-card/60 border border-white/10 space-y-4">
               <div className="flex items-center gap-2">
                 <BarChart2 className="w-4 h-4 text-accent" />
-                <h3 className="text-sm font-bold text-white">All 5 Paper Models</h3>
+                <h3 className="text-sm font-bold text-white">All Benchmark Models (7)</h3>
               </div>
 
               {/* Model tabs */}
               <div className="flex flex-col gap-2">
                 {MODEL_ORDER.map(key => {
                   const model = uploadState.output![key];
+                  if (!model) return null;
                   const isActive = activeModel === key;
                   const isBest = key === 'crnn';
                   return (
@@ -661,14 +662,15 @@ export const ClassifierView: React.FC = () => {
               {/* Model agreement indicator */}
               {(() => {
                 const o = uploadState.output!;
-                const agree = [o.crnn, o.svm, o.mlp, o.lr, o.knn, o.random].filter(m => m.predictedGenre === o.crnn.predictedGenre).length;
+                const all = [o.crnn, o.mlp, o.rf, o.lr, o.svm, o.knn, o.random].filter(Boolean) as SongNetResult[];
+                const agree = all.filter(m => m.predictedGenre === o.crnn.predictedGenre).length;
                 return (
                   <div className="flex items-center justify-between text-xs text-text-muted p-3 rounded-xl bg-white/5 border border-white/5">
                     <span>Model Agreement</span>
                     <span className={`font-bold font-mono ${
-                      agree >= 4 ? 'text-emerald-400' : agree >= 3 ? 'text-yellow-400' : 'text-red-400'
+                      agree >= 5 ? 'text-emerald-400' : agree >= 3 ? 'text-yellow-400' : 'text-red-400'
                     }`}>
-                      {agree}/6 models agree → {o.crnn.predictedGenre}
+                      {agree}/{all.length} models agree → {o.crnn.predictedGenre}
                     </span>
                   </div>
                 );

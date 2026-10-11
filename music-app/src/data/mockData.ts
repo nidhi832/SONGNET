@@ -74,14 +74,14 @@ export const MOCK_ML_MODELS: MLModelMetric[] = [
 export const MOCK_CONFUSION_MATRIX = {
   labels: ['Electr.', 'Experim.', 'Folk', 'Hip-Hop', 'Instrum.', 'Internat.', 'Pop', 'Rock'],
   matrix: [
-    [48, 8, 4, 11, 6, 9, 3, 11],   // Electronic (48% recall)
-    [7, 29, 9, 6, 18, 14, 2, 15],  // Experimental (29% recall)
-    [2, 4, 78, 2, 3, 5, 2, 4],     // Folk (78% recall)
-    [5, 2, 1, 83, 1, 4, 1, 3],     // Hip-Hop (83% recall)
-    [6, 12, 8, 4, 32, 21, 2, 15],  // Instrumental (32% recall)
-    [3, 4, 7, 5, 4, 73, 1, 3],     // International (73% recall)
-    [12, 10, 11, 14, 8, 21, 1, 23],// Pop (1% recall)
-    [5, 7, 10, 4, 6, 8, 10, 50]    // Rock (50% recall)
+    [56, 6, 1, 5, 11, 8, 3, 10],   // Electronic (56% recall)
+    [3, 37, 12, 7, 15, 13, 1, 12], // Experimental (37% recall)
+    [1, 1, 74, 1, 12, 6, 0, 5],    // Folk (74% recall)
+    [10, 2, 0, 75, 5, 3, 1, 4],    // Hip-Hop (75% recall)
+    [4, 12, 11, 1, 50, 10, 4, 8],  // Instrumental (50% recall)
+    [1, 4, 3, 11, 2, 71, 3, 5],    // International (71% recall)
+    [6, 12, 13, 8, 7, 16, 9, 29],  // Pop (9% recall)
+    [1, 5, 6, 1, 3, 6, 1, 77]      // Rock (77% recall)
   ]
 };
 

@@ -519,7 +519,7 @@ function getOfflineAssistantResponse(userPrompt: string, trackContext?: Track): 
 
 • **Acoustic Characteristics**: Rock music is driven by overdriven electric guitars, dynamic basslines, punchy drum transients, and energetic vocal presence. Typical tempos span **110 – 145 BPM**.
 • **Spectrogram Profile (128 Mel Bins)**: In SongNet's log-Mel spectrogram, Rock exhibits dense energy concentration across the mid-range (**500 Hz – 4 kHz**) from distorted guitar timbre, with sharp periodic spikes in low frequencies (**60 – 250 Hz**) corresponding to kick and snare drum hits.
-• **SongNet C-RNN Performance**: The 1D temporal convolutions track rhythmic guitar riffs while the recurrent temporal head tracks energetic chorus build-ups (50% test recall on FMA).
+• **SongNet C-RNN Performance**: The 1D temporal convolutions track rhythmic guitar riffs while the recurrent temporal head tracks energetic chorus build-ups (**77% test recall on FMA — highest of all genres**).
 • **Recommended Tracks to test**: Nirvana - *Smells Like Teen Spirit*, Queen - *Bohemian Rhapsody*, AC/DC - *Back In Black*.
 
 *(💡 Tip: You can also enter a Google Gemini API Key in Settings for live cloud generative AI!)*`;
@@ -530,7 +530,7 @@ function getOfflineAssistantResponse(userPrompt: string, trackContext?: Track): 
 
 • **Acoustic Characteristics**: Pop music features polished vocal production, high danceability, steady 4-on-the-floor beat grids, and catchy melodic hooks. Typical tempos range between **115 – 128 BPM**.
 • **Spectrogram Profile (128 Mel Bins)**: High harmonic energy concentrated in the vocal intelligibility band (**1.5 kHz – 6 kHz**), combined with tight, compressed low-end bass (**50 – 120 Hz**).
-• **SongNet C-RNN Performance**: Pop shares timbral characteristics with Electronic, Rock, and International, which causes interesting cross-genre boundary predictions in SongNet's Softmax layer.
+• **SongNet C-RNN Performance**: Pop shares timbral characteristics with Electronic, Rock, and International, which causes cross-genre boundary overlap (**9% test recall on FMA**).
 • **Recommended Tracks to test**: The Weeknd - *Blinding Lights*, Dua Lipa - *Levitating*, Taylor Swift - *Cruel Summer*.`;
   }
 
@@ -539,7 +539,7 @@ function getOfflineAssistantResponse(userPrompt: string, trackContext?: Track): 
 
 • **Acoustic Characteristics**: Defined by heavy 808 sub-bass, syncopated 16th-note trap hi-hats, rhythmic vocal delivery, and distinct percussive samples. Tempos typically sit between **80 – 100 BPM** (or half-time 140 – 160 BPM).
 • **Spectrogram Profile (128 Mel Bins)**: Massive sub-bass energy in the lowest Mel bands (**30 – 80 Hz**), paired with rapid transient bursts in high frequencies (**8 kHz – 16 kHz**).
-• **SongNet C-RNN Performance**: SongNet achieves its **highest recall (83%)** on Hip-Hop! The deep 1D convolutions readily capture the rhythmic cadence and deep 808 fundamental frequencies.`;
+• **SongNet C-RNN Performance**: SongNet achieves a strong **75% recall** on Hip-Hop! The deep 1D convolutions readily capture the rhythmic cadence and deep 808 fundamental frequencies.`;
   }
 
   if (p.includes('electronic') || p.includes('edm') || p.includes('techno') || p.includes('house')) {
@@ -547,7 +547,7 @@ function getOfflineAssistantResponse(userPrompt: string, trackContext?: Track): 
 
 • **Acoustic Characteristics**: Synthesized waveforms (sawtooth, square), arpeggiated melodic lines, automated resonant filter sweeps, and sidechain compression. Tempos typically span **120 – 132 BPM**.
 • **Spectrogram Profile (128 Mel Bins)**: Continuous energy across wide frequency bands without natural acoustic decay. Look for visual "risers" (ascending frequency diagonal sweeps) and sudden drops in energy.
-• **SongNet C-RNN Performance**: SongNet achieves **48% recall** and **74% precision** on Electronic tracks, accurately separating synthetic timbres from acoustic instruments.`;
+• **SongNet C-RNN Performance**: SongNet achieves **56% recall** on Electronic tracks, accurately separating synthetic timbres from acoustic instruments.`;
   }
 
   if (p.includes('folk') || p.includes('acoustic')) {
@@ -555,7 +555,7 @@ function getOfflineAssistantResponse(userPrompt: string, trackContext?: Track): 
 
 • **Acoustic Characteristics**: Unplugged acoustic guitars, banjos, violins, and intimate vocal storytelling. High organic dynamic range with natural room reverberation.
 • **Spectrogram Profile (128 Mel Bins)**: Natural acoustic decay visible as soft vertical plumes, with strong fundamental tones in **200 – 1200 Hz** and subtle acoustic pick transients.
-• **SongNet C-RNN Performance**: SongNet achieves a strong **78% recall** on Folk, as acoustic instruments exhibit clear harmonic overtone spacing easily detected by Conv1D kernels.`;
+• **SongNet C-RNN Performance**: SongNet achieves a strong **74% recall** on Folk, as acoustic instruments exhibit clear harmonic overtone spacing easily detected by Conv1D kernels.`;
   }
 
   if (p.includes('instrumental') || p.includes('classical')) {
@@ -563,7 +563,7 @@ function getOfflineAssistantResponse(userPrompt: string, trackContext?: Track): 
 
 • **Acoustic Characteristics**: Pure instrumental composition without vocal tracks. Wide dynamic shifts from pianissimo to fortissimo, featuring orchestral strings, brass, and piano.
 • **Spectrogram Profile (128 Mel Bins)**: Marked absence of the human vocal formant band (**2.5 kHz – 4 kHz**). Harmonic overtone stacks remain steady and sustained over long temporal frames.
-• **SongNet C-RNN Performance**: SongNet achieves **32% recall** and **48% precision** on Instrumental tracks in FMA Small.`;
+• **SongNet C-RNN Performance**: SongNet achieves **50% recall** on Instrumental tracks in FMA Small.`;
   }
 
   if (p.includes('experimental')) {
@@ -571,7 +571,7 @@ function getOfflineAssistantResponse(userPrompt: string, trackContext?: Track): 
 
 • **Acoustic Characteristics**: Avant-garde sound design, irregular time signatures, microtonal tunings, field recordings, and non-periodic noise elements.
 • **Spectrogram Profile (128 Mel Bins)**: High spectral flux and irregular spectral centroid distribution. Lacks typical periodic drum rhythm grids.
-• **SongNet C-RNN Performance**: Experimental is the most challenging genre for neural networks (29% recall), as it spans diverse, non-standard musical distributions.`;
+• **SongNet C-RNN Performance**: Experimental is challenging for neural networks (**37% recall**), as it spans diverse, non-standard musical distributions.`;
   }
 
   if (p.includes('international') || p.includes('world')) {
@@ -579,7 +579,7 @@ function getOfflineAssistantResponse(userPrompt: string, trackContext?: Track): 
 
 • **Acoustic Characteristics**: Regional instruments (sitar, tabla, djembe, flamenco guitar), polyrhythmic percussion, and non-Western scale structures.
 • **Spectrogram Profile (128 Mel Bins)**: Rich polyrhythmic low-to-mid transients with microtonal frequency modulations.
-• **SongNet C-RNN Performance**: SongNet achieves an impressive **73% recall** on International tracks, recognizing unique regional percussive time signatures.`;
+• **SongNet C-RNN Performance**: SongNet achieves an impressive **71% recall** on International tracks, recognizing unique regional percussive time signatures.`;
   }
 
   if (p.includes('accuracy') || p.includes('benchmark') || p.includes('model') || p.includes('crnn') || p.includes('result') || p.includes('fma') || p.includes('paper')) {
