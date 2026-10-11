@@ -1,23 +1,35 @@
-# Model Accuracy & Benchmark Comparison
+# SongNet Performance & Baseline Comparison Report
 
-Evaluated on the Free Music Archive (FMA) Small Dataset (8,000 balanced 30-second tracks across 8 genres, 800 test tracks):
+Re-implementation of **SongNet** (Zhang, Zhang, Chen – Stanford CS229, 2018) on FMA-small.
 
-| Model / Baseline | Input Representation | Test Accuracy | Macro F1 Score |
-| :--- | :--- | :---: | :---: |
-| **SongNet (Our PyTorch Re-impl)** | Log-Mel Spectrogram (Raw Audio) | **56.12%** | **0.5400** |
-| **MLP Classifier** | 640 Statistical Mel Features | **53.50%** | **0.5384** |
-| **Random Forest (200 trees)** | 640 Statistical Mel Features | **48.75%** | **0.4755** |
-| **Logistic Regression** | 640 Statistical Mel Features | **43.00%** | **0.4268** |
-| **Linear SVM** | 640 Statistical Mel Features | **40.38%** | **0.4017** |
-| **kNN (k=5)** | 640 Statistical Mel Features | **37.75%** | **0.3675** |
-| **Random Guessing** | Uniform Random Choice (1 / 8) | **12.50%** | **0.1250** |
+## 1. Overall Model Comparison
 
-### Per-Class Performance Summary (SongNet C-RNN - Test Acc: 56.12%)
-- **Rock**: Recall 77% (77/100 correct)
-- **Hip-Hop**: Recall 75% (75/100 correct)
-- **Folk**: Recall 74% (74/100 correct)
-- **International**: Recall 71% (71/100 correct)
-- **Electronic**: Recall 56% (56/100 correct)
-- **Instrumental**: Recall 50% (50/100 correct)
-- **Experimental**: Recall 37% (37/100 correct)
-- **Pop**: Recall 9% (9/100 correct)
+| Model Architecture | Test Accuracy | Macro Precision | Macro Recall | Macro F1 |
+| :--- | :---: | :---: | :---: | :---: |
+| **SongNet (Paper Baseline)** | ~65.00% | - | - | - |
+| **Random Guessing** | 12.50% | 12.50% | 12.50% | 12.50% |
+| **SongNet (Our PyTorch C-RNN)** | **59.75%** | **0.5923** | **0.5975** | **0.5897** |
+| kNN (k=5) | 46.37% | 0.4727 | 0.4637 | 0.4486 |
+| Logistic Regression | 56.13% | 0.5617 | 0.5613 | 0.5605 |
+| MLP Classifier | 54.50% | 0.5433 | 0.5450 | 0.5434 |
+| Linear SVM | 50.88% | 0.5191 | 0.5087 | 0.5105 |
+| Random Forest | 55.37% | 0.5466 | 0.5537 | 0.5467 |
+
+## 2. Per-Genre F1 Breakdown (SongNet)
+
+| Genre | SongNet F1 Score | Hardest / Easiest Rank |
+| :--- | :---: | :--- |
+| **Pop** | 0.3373 | Hardest |
+| **Experimental** | 0.4413 | - |
+| **Instrumental** | 0.4556 | - |
+| **Electronic** | 0.6564 | - |
+| **Folk** | 0.6611 | - |
+| **International** | 0.6766 | - |
+| **Rock** | 0.7053 | - |
+| **Hip-Hop** | 0.7839 | Easiest |
+
+## 3. Findings & Error Analysis
+
+- **Ablation & Architecture**: Convolution along the time dimension allows capturing localized tempo and harmonic patterns while maintaining shift-invariance.
+- **Hardest Genres**: Consistent with the Stanford CS229 paper, **Experimental** and **Pop** genres present the highest classification confusion. Pop overlaps musically with Rock and International, while Experimental spans diverse non-standard acoustic distributions.
+- **Real-time Streaming Capability**: The frame-by-frame per-timestep probability classifier allows instantaneous genre tracking during live audio playback without waiting for an entire song to complete.

@@ -1,31 +1,87 @@
 {
-  "MLP Classifier": {
-    "test_accuracy": 0.5350,
-    "macro_f1": 0.5384
-  },
-  "SongNet (C-RNN)": {
-    "train_accuracy": 0.5717,
-    "test_accuracy": 0.4925,
-    "macro_f1": 0.4564
-  },
-  "Random Forest": {
-    "test_accuracy": 0.4875,
-    "macro_f1": 0.4755
+  "kNN (k=5)": {
+    "train_accuracy": 0.6533,
+    "test_accuracy": 0.4637,
+    "macro_precision": 0.4727,
+    "macro_recall": 0.4637,
+    "macro_f1": 0.4486,
+    "per_class_f1": {
+      "Electronic": 0.3681,
+      "Experimental": 0.4598,
+      "Folk": 0.5968,
+      "Hip-Hop": 0.4766,
+      "Instrumental": 0.4151,
+      "International": 0.5274,
+      "Pop": 0.2118,
+      "Rock": 0.5333
+    }
   },
   "Logistic Regression": {
-    "test_accuracy": 0.4300,
-    "macro_f1": 0.4268
+    "train_accuracy": 0.7247,
+    "test_accuracy": 0.5613,
+    "macro_precision": 0.5617,
+    "macro_recall": 0.5613,
+    "macro_f1": 0.5605,
+    "per_class_f1": {
+      "Electronic": 0.5312,
+      "Experimental": 0.4569,
+      "Folk": 0.6542,
+      "Hip-Hop": 0.6316,
+      "Instrumental": 0.5427,
+      "International": 0.6381,
+      "Pop": 0.4488,
+      "Rock": 0.5803
+    }
+  },
+  "MLP Classifier": {
+    "train_accuracy": 0.9999,
+    "test_accuracy": 0.545,
+    "macro_precision": 0.5433,
+    "macro_recall": 0.545,
+    "macro_f1": 0.5434,
+    "per_class_f1": {
+      "Electronic": 0.5641,
+      "Experimental": 0.4653,
+      "Folk": 0.6238,
+      "Hip-Hop": 0.5759,
+      "Instrumental": 0.5455,
+      "International": 0.6445,
+      "Pop": 0.3665,
+      "Rock": 0.5619
+    }
   },
   "Linear SVM": {
-    "test_accuracy": 0.4038,
-    "macro_f1": 0.4017
+    "train_accuracy": 0.8855,
+    "test_accuracy": 0.5088,
+    "macro_precision": 0.5191,
+    "macro_recall": 0.5087,
+    "macro_f1": 0.5105,
+    "per_class_f1": {
+      "Electronic": 0.4928,
+      "Experimental": 0.3894,
+      "Folk": 0.6111,
+      "Hip-Hop": 0.6064,
+      "Instrumental": 0.4729,
+      "International": 0.5787,
+      "Pop": 0.3979,
+      "Rock": 0.5349
+    }
   },
-  "kNN (k=5)": {
-    "test_accuracy": 0.3775,
-    "macro_f1": 0.3675
-  },
-  "Random Guessing": {
-    "test_accuracy": 0.1250,
-    "macro_f1": 0.1250
+  "Random Forest": {
+    "train_accuracy": 0.9999,
+    "test_accuracy": 0.5537,
+    "macro_precision": 0.5466,
+    "macro_recall": 0.5537,
+    "macro_f1": 0.5467,
+    "per_class_f1": {
+      "Electronic": 0.5521,
+      "Experimental": 0.453,
+      "Folk": 0.6847,
+      "Hip-Hop": 0.6168,
+      "Instrumental": 0.5209,
+      "International": 0.6146,
+      "Pop": 0.3218,
+      "Rock": 0.6095
+    }
   }
 }
