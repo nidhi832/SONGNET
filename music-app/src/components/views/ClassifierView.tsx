@@ -16,7 +16,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { usePlayer } from '../../context/PlayerContext';
 import {
-  Upload, Play, Pause, Sparkles, Cpu, Activity, Disc, CheckCircle2,
+  Upload, Play, Pause, Sparkles, Activity, Disc, CheckCircle2,
   RefreshCw, AlertCircle, Loader2, Zap, Music2, FileAudio, Brain, BarChart2
 } from 'lucide-react';
 import { MOCK_TRACKS } from '../../data/mockData';
@@ -282,20 +282,12 @@ export const ClassifierView: React.FC = () => {
     <div className="space-y-8 pb-16 animate-fade-in">
 
       {/* ── Hero Header ── */}
-      <div className="relative rounded-3xl bg-gradient-to-r from-accent/20 via-card to-card p-8 border border-white/10 overflow-hidden">
+      <div className="relative rounded-3xl bg-gradient-to-r from-accent/20 via-card to-card p-6 md:p-8 border border-white/10 overflow-hidden">
         <div className="absolute right-0 top-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-accent/10 blur-[100px] pointer-events-none" />
-        <div className="relative z-10 space-y-3 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider">
-            <Cpu className="w-3.5 h-3.5" />
-            SONGNET — Stanford CS229 Project #53
-          </div>
+        <div className="relative z-10">
           <h1 className="text-3xl md:text-4xl font-black text-white">
             Real-Time Music Genre Classifier
           </h1>
-          <p className="text-text-secondary text-sm leading-relaxed">
-            Implements the SongNet pipeline: <strong className="text-white">128-bin Log-Mel Spectrogram</strong> extraction
-            at 22.05 kHz → all benchmark models: <span className="text-accent font-semibold">SongNet GRU / CRNN (59.75% Test Accuracy, Macro F1 0.5897), Logistic Regression (56.12%), Random Forest (55.38%), MLP (54.50%), Linear SVM (50.88%), kNN (46.38%)</span>.
-          </p>
         </div>
       </div>
 
